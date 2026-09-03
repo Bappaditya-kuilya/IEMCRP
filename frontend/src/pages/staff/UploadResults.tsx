@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getStaffExams, uploadResults } from "@/lib/api";
-import { Card } from "@/components/ui/Card";
+import { Plus, Trash2, Upload } from "lucide-react";
 
 interface Exam {
   id: string;
@@ -109,18 +109,38 @@ export default function UploadResults() {
   }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-semibold text-slate-900">Upload Results</h1>
-
-      {error && <p className="text-sm text-red-600" role="alert" aria-live="polite">{error}</p>}
-      {success && <p className="text-sm text-green-600" role="status" aria-live="polite">{success}</p>}
-
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
       <div>
-        <label htmlFor="exam-select" className="block text-sm font-medium text-slate-700 mb-1">Select Exam</label>
+        <h1 className="text-2xl font-bold text-surface-900">Upload Results</h1>
+        <p className="text-sm text-surface-500 mt-1">Submit grades for your students</p>
+      </div>
+
+      {/* Alerts */}
+      {error && (
+        <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-700 flex items-center gap-3" role="alert" aria-live="polite">
+          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center">
+            <span className="text-red-600 text-xs font-bold">!</span>
+          </div>
+          {error}
+        </div>
+      )}
+      {success && (
+        <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-700 flex items-center gap-3" role="status" aria-live="polite">
+          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center">
+            <span className="text-emerald-600 text-xs font-bold">✓</span>
+          </div>
+          {success}
+        </div>
+      )}
+
+      {/* Exam selector */}
+      <div className="card-modern p-6">
+        <label htmlFor="exam-select" className="block text-sm font-semibold text-surface-900 mb-2">Select Exam</label>
         <select
           id="exam-select"
           required
-          className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="input-modern"
           value={examId}
           onChange={(e) => setExamId(e.target.value)}
         >
@@ -135,176 +155,158 @@ export default function UploadResults() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Desktop table */}
-        <Card className="hidden md:block overflow-x-auto">
-          <table className="w-full text-sm text-left" aria-label="Upload results">
+        <div className="card-modern hidden md:block overflow-hidden">
+          <table className="table-modern" aria-label="Upload results">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th scope="col" className="py-3 px-4 font-medium text-slate-600">Student ID</th>
-                <th scope="col" className="py-3 px-4 font-medium text-slate-600">Subject Code</th>
-                <th scope="col" className="py-3 px-4 font-medium text-slate-600">Subject Name</th>
-                <th scope="col" className="py-3 px-4 font-medium text-slate-600">Marks</th>
-                <th scope="col" className="py-3 px-4 font-medium text-slate-600">Max</th>
-                <th scope="col" className="py-3 px-4 font-medium text-slate-600">Grade</th>
-                <th scope="col" className="py-3 px-4"></th>
+              <tr>
+                <th scope="col">Student ID</th>
+                <th scope="col">Subject Code</th>
+                <th scope="col">Subject Name</th>
+                <th scope="col">Marks</th>
+                <th scope="col">Max</th>
+                <th scope="col">Grade</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row.id} className="border-b border-slate-100">
-                  <td className="py-2 px-4">
+                <tr key={row.id}>
+                  <td>
                     <label htmlFor={`student-id-${row.id}`} className="sr-only">Student ID</label>
                     <input
                       id={`student-id-${row.id}`}
                       required
-                      className="w-full h-8 border border-slate-300 rounded px-2 text-sm"
+                      className="input-modern !py-2 !px-3"
                       value={row.studentId}
                       onChange={(e) => updateRow(row.id, "studentId", e.target.value)}
                     />
                   </td>
-                  <td className="py-2 px-4">
+                  <td>
                     <label htmlFor={`subject-code-${row.id}`} className="sr-only">Subject Code</label>
                     <input
                       id={`subject-code-${row.id}`}
                       required
-                      className="w-full h-8 border border-slate-300 rounded px-2 text-sm"
+                      className="input-modern !py-2 !px-3"
                       value={row.subjectCode}
                       onChange={(e) => updateRow(row.id, "subjectCode", e.target.value)}
                     />
                   </td>
-                  <td className="py-2 px-4">
+                  <td>
                     <label htmlFor={`subject-name-${row.id}`} className="sr-only">Subject Name</label>
                     <input
                       id={`subject-name-${row.id}`}
                       required
-                      className="w-full h-8 border border-slate-300 rounded px-2 text-sm"
+                      className="input-modern !py-2 !px-3"
                       value={row.subjectName}
                       onChange={(e) => updateRow(row.id, "subjectName", e.target.value)}
                     />
                   </td>
-                  <td className="py-2 px-4">
+                  <td>
                     <label htmlFor={`marks-${row.id}`} className="sr-only">Marks</label>
                     <input
                       id={`marks-${row.id}`}
                       required
                       type="number"
                       min={0}
-                      className="w-20 h-8 border border-slate-300 rounded px-2 text-sm"
+                      className="input-modern !py-2 !px-3 w-20"
                       value={row.marksObtained || ""}
                       onChange={(e) => updateRow(row.id, "marksObtained", Number(e.target.value))}
                     />
                   </td>
-                  <td className="py-2 px-4">
+                  <td>
                     <label htmlFor={`max-marks-${row.id}`} className="sr-only">Max Marks</label>
                     <input
                       id={`max-marks-${row.id}`}
                       required
                       type="number"
                       min={1}
-                      className="w-20 h-8 border border-slate-300 rounded px-2 text-sm"
+                      className="input-modern !py-2 !px-3 w-20"
                       value={row.maxMarks}
                       onChange={(e) => updateRow(row.id, "maxMarks", Number(e.target.value))}
                     />
                   </td>
-                  <td className="py-3 px-4 text-slate-700 font-medium">{row.grade}</td>
-                  <td className="py-2 px-4">
+                  <td className="font-semibold text-surface-900">{row.grade}</td>
+                  <td>
                     <button
                       type="button"
                       onClick={() => removeRow(row.id)}
                       disabled={rows.length === 1}
-                      className="text-red-500 hover:text-red-700 disabled:opacity-30 text-sm"
+                      className="p-1.5 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 disabled:opacity-30 transition-colors"
                     >
-                      Remove
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </Card>
+        </div>
 
         {/* Mobile cards */}
         <div className="md:hidden space-y-3">
           {rows.map((row, idx) => (
-            <Card key={row.id}>
+            <div key={row.id} className="card-modern p-4">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-xs text-slate-500">Row {idx + 1}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeRow(row.id)}
-                      disabled={rows.length === 1}
-                      aria-label={`Remove row ${idx + 1}`}
-                      className="text-red-500 hover:text-red-700 disabled:opacity-30 text-xs"
-                    >
-                  Remove
+                <span className="text-xs font-semibold text-surface-500">Row {idx + 1}</span>
+                <button
+                  type="button"
+                  onClick={() => removeRow(row.id)}
+                  disabled={rows.length === 1}
+                  aria-label={`Remove row ${idx + 1}`}
+                  className="p-1 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 disabled:opacity-30 transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
                 </button>
               </div>
               <div className="space-y-2">
-                <label htmlFor={`m-student-id-${row.id}`} className="sr-only">Student ID</label>
                 <input
-                  id={`m-student-id-${row.id}`}
                   required
                   placeholder="Student ID"
-                  className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm"
+                  className="input-modern"
                   value={row.studentId}
                   onChange={(e) => updateRow(row.id, "studentId", e.target.value)}
                 />
                 <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label htmlFor={`m-subject-code-${row.id}`} className="sr-only">Subject Code</label>
-                    <input
-                      id={`m-subject-code-${row.id}`}
-                      required
-                      placeholder="Subject Code"
-                      className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm"
-                      value={row.subjectCode}
-                      onChange={(e) => updateRow(row.id, "subjectCode", e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor={`m-subject-name-${row.id}`} className="sr-only">Subject Name</label>
-                    <input
-                      id={`m-subject-name-${row.id}`}
-                      required
-                      placeholder="Subject Name"
-                      className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm"
-                      value={row.subjectName}
-                      onChange={(e) => updateRow(row.id, "subjectName", e.target.value)}
-                    />
-                  </div>
+                  <input
+                    required
+                    placeholder="Subject Code"
+                    className="input-modern"
+                    value={row.subjectCode}
+                    onChange={(e) => updateRow(row.id, "subjectCode", e.target.value)}
+                  />
+                  <input
+                    required
+                    placeholder="Subject Name"
+                    className="input-modern"
+                    value={row.subjectName}
+                    onChange={(e) => updateRow(row.id, "subjectName", e.target.value)}
+                  />
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                  <div>
-                    <label htmlFor={`m-marks-${row.id}`} className="sr-only">Marks</label>
-                    <input
-                      id={`m-marks-${row.id}`}
-                      required
-                      type="number"
-                      min={0}
-                      placeholder="Marks"
-                      className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm"
-                      value={row.marksObtained || ""}
-                      onChange={(e) => updateRow(row.id, "marksObtained", Number(e.target.value))}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor={`m-max-${row.id}`} className="sr-only">Max Marks</label>
-                    <input
-                      id={`m-max-${row.id}`}
-                      required
-                      type="number"
-                      min={1}
-                      placeholder="Max"
-                      className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm"
-                      value={row.maxMarks}
-                      onChange={(e) => updateRow(row.id, "maxMarks", Number(e.target.value))}
-                    />
-                  </div>
-                  <div className="h-10 flex items-center text-sm font-medium text-slate-700">
-                    {row.grade}
+                  <input
+                    required
+                    type="number"
+                    min={0}
+                    placeholder="Marks"
+                    className="input-modern"
+                    value={row.marksObtained || ""}
+                    onChange={(e) => updateRow(row.id, "marksObtained", Number(e.target.value))}
+                  />
+                  <input
+                    required
+                    type="number"
+                    min={1}
+                    placeholder="Max"
+                    className="input-modern"
+                    value={row.maxMarks}
+                    onChange={(e) => updateRow(row.id, "maxMarks", Number(e.target.value))}
+                  />
+                  <div className="flex items-center text-sm font-semibold text-surface-900">
+                    Grade: {row.grade}
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
 
@@ -312,17 +314,28 @@ export default function UploadResults() {
           <button
             type="button"
             onClick={addRow}
-            className="h-10 px-4 border border-slate-300 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2.5 border border-surface-200 rounded-xl text-sm font-semibold text-surface-700 hover:bg-surface-50 transition-colors"
           >
+            <Plus className="h-4 w-4" />
             Add Row
           </button>
           <button
             type="submit"
             disabled={loading}
             aria-busy={loading}
-            className="h-10 px-6 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 transition-colors"
+            className="btn-primary"
           >
-            {loading ? "Uploading..." : "Submit Results"}
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Uploading...
+              </div>
+            ) : (
+              <>
+                <Upload className="h-4 w-4" />
+                Submit Results
+              </>
+            )}
           </button>
         </div>
       </form>

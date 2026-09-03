@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "@/lib/api";
-import { Card } from "@/components/ui/Card";
-import { Users, ClipboardList, Bell, Activity } from "lucide-react";
+import { Users, ClipboardList, Bell, Activity, Plus, Shield } from "lucide-react";
 
 interface DashboardStats {
   totalStudents: number;
@@ -33,88 +32,154 @@ export default function AdminDashboard() {
       .catch(() => {});
   }, []);
 
-  if (error) return <div className="text-sm text-red-600" role="alert" aria-live="polite">{error}</div>;
-  if (!stats) return <div className="text-sm text-slate-600" aria-live="polite">Loading...</div>;
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3">
+            <span className="text-red-600 text-lg">!</span>
+          </div>
+          <p className="text-sm text-red-600" role="alert" aria-live="polite">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin" />
+          <span className="text-sm text-surface-500">Loading admin dashboard...</span>
+        </div>
+      </div>
+    );
+  }
 
   const cards = [
-    { label: "Total Students", value: stats.totalStudents, icon: Users, color: "text-blue-500" },
-    { label: "Total Staff", value: stats.totalStaff, icon: ClipboardList, color: "text-purple-500" },
-    { label: "Active Notices", value: stats.activeNotices, icon: Bell, color: "text-amber-500" },
-    { label: "System Status", value: stats.systemStatus, icon: Activity, color: "text-green-500" },
+    { label: "Students", value: stats.totalStudents, icon: Users, gradient: "gradient-primary" },
+    { label: "Staff", value: stats.totalStaff, icon: ClipboardList, gradient: "bg-gradient-to-br from-purple-500 to-violet-600" },
+    { label: "Notices", value: stats.activeNotices, icon: Bell, gradient: "bg-gradient-to-br from-amber-500 to-orange-600" },
+    { label: "System", value: stats.systemStatus, icon: Activity, gradient: "bg-gradient-to-br from-emerald-500 to-teal-600" },
   ];
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-slate-900">Admin Dashboard</h1>
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-surface-900">Admin Dashboard</h1>
+          <p className="text-sm text-surface-500 mt-1">System overview and management</p>
+        </div>
+        <div className="flex gap-3">
+          <Link to="/admin/create-user" className="btn-primary">
+            <Plus className="h-4 w-4" />
+            Create User
+          </Link>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {cards.map(({ label, value, icon: Icon, color }) => (
-          <Card key={label}>
-            <div className="flex items-center gap-3">
-              <Icon className={`h-5 w-5 ${color}`} />
+      {/* Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {cards.map(({ label, value, icon: Icon, gradient }) => (
+          <div key={label} className="card-modern p-5 group">
+            <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs text-slate-600">{label}</p>
-                <p className="text-lg font-semibold text-slate-900">{value}</p>
+                <p className="text-sm font-medium text-surface-500 mb-1">{label}</p>
+                <p className="text-2xl font-bold text-surface-900">{value}</p>
+              </div>
+              <div className={`w-12 h-12 rounded-2xl ${gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                <Icon className="h-6 w-6 text-white" />
               </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
 
-      <div className="flex gap-3">
-        <Link
-          to="/admin/create-user"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-        >
-          <Users className="h-4 w-4" /> Create User
-        </Link>
-        <Link
-          to="/notices"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-        >
-          <Bell className="h-4 w-4" /> Manage Notices
-        </Link>
+      {/* Quick actions */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { label: "Manage Users", href: "/admin/users", color: "bg-primary-50 text-primary-700 hover:bg-primary-100" },
+          { label: "Audit Log", href: "/admin/audit", color: "bg-amber-50 text-amber-700 hover:bg-amber-100" },
+          { label: "Manage Notices", href: "/notices", color: "bg-emerald-50 text-emerald-700 hover:bg-emerald-100" },
+          { label: "View Reports", href: "/admin/audit", color: "bg-surface-100 text-surface-700 hover:bg-surface-200" },
+        ].map(({ label, href, color }) => (
+          <Link
+            key={href}
+            to={href}
+            className={`flex items-center justify-center p-4 rounded-xl text-sm font-semibold transition-all ${color}`}
+          >
+            {label}
+          </Link>
+        ))}
       </div>
 
-      <Card>
-        <h2 className="text-sm font-medium text-slate-700 mb-3">Recent Audit Log</h2>
-        <div className="hidden md:block overflow-x-auto">
-          <table className="w-full text-sm text-left" aria-label="Recent audit log">
+      {/* Audit log */}
+      <div className="card-modern overflow-hidden">
+        <div className="p-6 border-b border-surface-100 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-primary-500" />
+            <h2 className="text-sm font-semibold text-surface-900">Recent Audit Log</h2>
+          </div>
+          <Link to="/admin/audit" className="text-xs font-semibold text-primary-600 hover:text-primary-700">
+            View all →
+          </Link>
+        </div>
+
+        {/* Desktop table */}
+        <div className="hidden md:block">
+          <table className="table-modern" aria-label="Recent audit log">
             <thead>
-              <tr className="border-b border-slate-200">
-                <th scope="col" className="py-2 px-3 font-medium text-slate-600">Time</th>
-                <th scope="col" className="py-2 px-3 font-medium text-slate-600">User</th>
-                <th scope="col" className="py-2 px-3 font-medium text-slate-600">Action</th>
-                <th scope="col" className="py-2 px-3 font-medium text-slate-600">Entity</th>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">User</th>
+                <th scope="col">Action</th>
+                <th scope="col">Entity</th>
               </tr>
             </thead>
             <tbody>
               {audit.map((e) => (
-                <tr key={e.id} className="border-b border-slate-100">
-                  <td className="py-2 px-3 text-slate-700">{new Date(e.timestamp).toLocaleString()}</td>
-                  <td className="py-2 px-3 text-slate-700">{e.user}</td>
-                  <td className="py-2 px-3 text-slate-700">{e.action}</td>
-                  <td className="py-2 px-3 text-slate-700">{e.entity}</td>
+                <tr key={e.id}>
+                  <td className="font-mono text-xs text-surface-500">
+                    {new Date(e.timestamp).toLocaleString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
+                  <td className="font-medium text-surface-900">{e.user}</td>
+                  <td>
+                    <span className="badge-modern bg-surface-100 text-surface-600">{e.action}</span>
+                  </td>
+                  <td className="text-surface-600">{e.entity}</td>
                 </tr>
               ))}
               {audit.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="py-2 px-3 text-slate-600 text-center">No entries</td>
+                  <td colSpan={4} className="text-center text-surface-400 py-8">No entries</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
-        <div className="md:hidden space-y-2">
+
+        {/* Mobile cards */}
+        <div className="md:hidden divide-y divide-surface-100">
           {audit.map((e) => (
-            <div key={e.id} className="border-b border-slate-100 pb-2">
-              <p className="text-sm text-slate-900">{e.action}</p>
-              <p className="text-xs text-slate-600">{e.user} &middot; {e.entity}</p>
-              <p className="text-xs text-slate-600">{new Date(e.timestamp).toLocaleString()}</p>
+            <div key={e.id} className="p-4">
+              <div className="flex justify-between items-start mb-1">
+                <p className="text-sm font-medium text-surface-900">{e.action}</p>
+                <span className="badge-modern bg-surface-100 text-surface-600 text-[10px]">{e.entity}</span>
+              </div>
+              <p className="text-xs text-surface-500">{e.user}</p>
+              <p className="text-xs text-surface-400 mt-1">
+                {new Date(e.timestamp).toLocaleString()}
+              </p>
             </div>
           ))}
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createExam } from "@/lib/api";
-import { Card } from "@/components/ui/Card";
+import { ClipboardList, ArrowLeft } from "lucide-react";
 
 const examTypes = ["MIDTERM", "FINAL", "INTERNAL"];
 
@@ -35,30 +35,49 @@ export default function CreateExam() {
   }
 
   return (
-    <div className="max-w-lg mx-auto space-y-4">
-      <h1 className="text-2xl font-semibold text-slate-900">Create Exam</h1>
+    <div className="max-w-lg mx-auto space-y-6 animate-fade-in">
+      {/* Header */}
+      <div>
+        <button
+          onClick={() => navigate("/staff/results")}
+          className="inline-flex items-center gap-1.5 text-sm text-surface-500 hover:text-surface-700 mb-3 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to exams
+        </button>
+        <h1 className="text-2xl font-bold text-surface-900">Create Exam</h1>
+        <p className="text-sm text-surface-500 mt-1">Set up a new examination</p>
+      </div>
 
-      {error && <p className="text-sm text-red-600" role="alert" aria-live="polite">{error}</p>}
+      {error && (
+        <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-700 flex items-center gap-3" role="alert" aria-live="polite">
+          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center">
+            <span className="text-red-600 text-xs font-bold">!</span>
+          </div>
+          {error}
+        </div>
+      )}
 
-      <Card>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="card-modern p-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="exam-name" className="block text-sm font-medium text-slate-700 mb-1">Exam Name</label>
+            <label htmlFor="exam-name" className="block text-sm font-semibold text-surface-900 mb-2">Exam Name</label>
             <input
               id="exam-name"
               type="text"
               required
-              className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-modern"
+              placeholder="e.g., Mid Semester Examination"
               value={form.name}
               onChange={(e) => update("name", e.target.value)}
             />
           </div>
 
           <div>
-            <label htmlFor="exam-type" className="block text-sm font-medium text-slate-700 mb-1">Exam Type</label>
+            <label htmlFor="exam-type" className="block text-sm font-semibold text-surface-900 mb-2">Exam Type</label>
             <select
               id="exam-type"
-              className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-modern"
               value={form.examType}
               onChange={(e) => update("examType", e.target.value)}
             >
@@ -69,27 +88,27 @@ export default function CreateExam() {
           </div>
 
           <div>
-            <label htmlFor="semester" className="block text-sm font-medium text-slate-700 mb-1">Semester</label>
+            <label htmlFor="semester" className="block text-sm font-semibold text-surface-900 mb-2">Semester</label>
             <select
               id="semester"
-              className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-modern"
               value={form.semester}
               onChange={(e) => update("semester", Number(e.target.value))}
             >
               {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
-                <option key={n} value={n}>{n}</option>
+                <option key={n} value={n}>Semester {n}</option>
               ))}
             </select>
           </div>
 
           <div>
-            <label htmlFor="academic-year" className="block text-sm font-medium text-slate-700 mb-1">Academic Year</label>
+            <label htmlFor="academic-year" className="block text-sm font-semibold text-surface-900 mb-2">Academic Year</label>
             <input
               id="academic-year"
               type="text"
               required
               placeholder="2025-2026"
-              className="w-full h-10 border border-slate-300 rounded-md px-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-modern"
               value={form.academicYear}
               onChange={(e) => update("academicYear", e.target.value)}
             />
@@ -99,12 +118,22 @@ export default function CreateExam() {
             type="submit"
             disabled={loading}
             aria-busy={loading}
-            className="w-full h-10 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 transition-colors"
+            className="btn-primary w-full"
           >
-            {loading ? "Creating..." : "Create Exam"}
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Creating...
+              </div>
+            ) : (
+              <>
+                <ClipboardList className="h-4 w-4" />
+                Create Exam
+              </>
+            )}
           </button>
         </form>
-      </Card>
+      </div>
     </div>
   );
 }

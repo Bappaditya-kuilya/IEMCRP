@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getStaffExams } from "@/lib/api";
-import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import { ClipboardList, Plus, Upload } from "lucide-react";
 
 interface Exam {
   id: string;
@@ -30,78 +30,95 @@ export default function ManageResults() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-slate-900">Manage Results</h1>
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-surface-900">Manage Results</h1>
+          <p className="text-sm text-surface-500 mt-1">{exams.length} exams found</p>
+        </div>
         <button
           onClick={() => navigate("/staff/create-exam")}
-          className="h-10 px-4 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+          className="btn-primary"
         >
+          <Plus className="h-4 w-4" />
           Create Exam
         </button>
       </div>
 
-      {error && <p className="text-sm text-red-600" role="alert" aria-live="polite">{error}</p>}
+      {error && (
+        <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-700" role="alert" aria-live="polite">
+          {error}
+        </div>
+      )}
 
+      {/* Empty state */}
       {exams.length === 0 && !error && (
-        <p className="text-sm text-slate-600">No exams found. Create one to get started.</p>
+        <div className="card-modern p-12 text-center">
+          <div className="w-12 h-12 rounded-full bg-surface-100 flex items-center justify-center mx-auto mb-3">
+            <ClipboardList className="h-6 w-6 text-surface-400" />
+          </div>
+          <p className="text-sm text-surface-500">No exams found. Create one to get started.</p>
+        </div>
       )}
 
       {/* Desktop table */}
-      <Card className="hidden md:block overflow-x-auto">
-        <table className="w-full text-sm text-left" aria-label="Exams">
+      <div className="card-modern hidden md:block overflow-hidden">
+        <table className="table-modern" aria-label="Exams">
           <thead>
-            <tr className="border-b border-slate-200">
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Name</th>
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Type</th>
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Semester</th>
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Year</th>
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Actions</th>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Semester</th>
+              <th scope="col">Year</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
             {exams.map((exam) => (
-              <tr key={exam.id} className="border-b border-slate-100 hover:bg-slate-50">
-                <td className="py-3 px-4 text-slate-900">{exam.name}</td>
-                <td className="py-3 px-4">
+              <tr key={exam.id}>
+                <td className="font-medium text-surface-900">{exam.name}</td>
+                <td>
                   <Badge variant={(typeColor[exam.examType] as any) || "active"}>
                     {exam.examType}
                   </Badge>
                 </td>
-                <td className="py-3 px-4 text-slate-700">{exam.semester}</td>
-                <td className="py-3 px-4 text-slate-700">{exam.academicYear}</td>
-                <td className="py-3 px-4">
+                <td className="text-surface-600">Sem {exam.semester}</td>
+                <td className="text-surface-600">{exam.academicYear}</td>
+                <td>
                   <button
                     onClick={() => navigate(`/staff/upload?examId=${exam.id}`)}
-                    className="text-sm text-blue-600 hover:text-blue-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                    className="inline-flex items-center gap-1.5 text-sm text-primary-600 hover:text-primary-700 font-semibold"
                   >
-                    Upload Results
+                    <Upload className="h-3.5 w-3.5" />
+                    Upload
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </Card>
+      </div>
 
       {/* Mobile cards */}
       <div className="md:hidden space-y-3">
         {exams.map((exam) => (
-          <Card key={exam.id}>
+          <div key={exam.id} className="card-modern p-4">
             <div className="flex justify-between items-start mb-2">
-              <p className="font-medium text-slate-900">{exam.name}</p>
+              <p className="font-semibold text-surface-900">{exam.name}</p>
               <Badge variant={(typeColor[exam.examType] as any) || "active"}>
                 {exam.examType}
               </Badge>
             </div>
-            <p className="text-sm text-slate-600">Sem {exam.semester} &middot; {exam.academicYear}</p>
+            <p className="text-sm text-surface-500">Sem {exam.semester} · {exam.academicYear}</p>
             <button
               onClick={() => navigate(`/staff/upload?examId=${exam.id}`)}
-              className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary-600 hover:text-primary-700 font-semibold"
             >
+              <Upload className="h-3.5 w-3.5" />
               Upload Results
             </button>
-          </Card>
+          </div>
         ))}
       </div>
     </div>

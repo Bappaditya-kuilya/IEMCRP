@@ -5,10 +5,11 @@ import {
   Users,
   ClipboardCheck,
   Bell,
-  Settings,
   ClipboardList,
   Upload,
-  Shield,
+  BookOpen,
+  CreditCard,
+  BarChart3,
 } from "lucide-react"
 import { isStaffOrAdmin, isAdmin } from "@/lib/api"
 
@@ -18,7 +19,6 @@ const navItems = [
   { to: "/students", label: "Students", icon: Users },
   { to: "/attendance", label: "Attendance", icon: ClipboardCheck },
   { to: "/notices", label: "Notices", icon: Bell },
-  { to: "/settings", label: "Settings", icon: Settings },
 ]
 
 const staffItems = [
@@ -27,40 +27,51 @@ const staffItems = [
 ]
 
 const adminItems = [
-  { to: "/admin", label: "Admin Dashboard", icon: Shield },
-  { to: "/admin/users", label: "Manage Users", icon: Users },
+  { to: "/admin", label: "Overview", icon: BarChart3 },
+  { to: "/admin/users", label: "Users", icon: Users },
+  { to: "/admin/courses", label: "Courses", icon: BookOpen },
+  { to: "/admin/fees", label: "Fees", icon: CreditCard },
   { to: "/admin/audit", label: "Audit Log", icon: ClipboardList },
 ]
 
 export default function Sidebar() {
   return (
-    <div className="w-64 bg-gray-900 text-gray-100 flex flex-col min-h-screen">
-      <div className="px-6 py-5 border-b border-gray-800">
-        <h1 className="text-lg font-semibold tracking-tight">IEMCRP</h1>
-        <p className="text-xs text-gray-400 mt-0.5">College ERP System</p>
+    <div className="w-64 bg-surface-950 flex flex-col min-h-screen relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary-900/20 via-transparent to-accent-900/10 pointer-events-none" />
+
+      {/* Logo */}
+      <div className="relative px-6 py-6 border-b border-white/5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg shadow-primary-500/20">
+            <GraduationCap className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <h1 className="text-base font-bold text-white tracking-tight">IEMCRP</h1>
+            <p className="text-[11px] text-white/40 font-medium">College ERP</p>
+          </div>
+        </div>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      {/* Navigation */}
+      <nav className="relative flex-1 px-3 py-4 space-y-1">
         {navItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             end={to === "/"}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 ${
-                isActive
-                  ? "bg-gray-800 text-white"
-                  : "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200"
-              }`
+              `sidebar-item ${isActive ? "sidebar-item-active" : ""}`
             }
           >
-            <Icon className="h-4 w-4" />
+            <Icon className="h-[18px] w-[18px]" />
             {label}
           </NavLink>
         ))}
+
         {isStaffOrAdmin() && (
           <>
-            <div className="pt-3 pb-1 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <div className="pt-5 pb-2 px-3 text-[10px] font-semibold text-white/30 uppercase tracking-widest">
               Staff
             </div>
             {staffItems.map(({ to, label, icon: Icon }) => (
@@ -68,22 +79,19 @@ export default function Sidebar() {
                 key={to}
                 to={to}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 ${
-                    isActive
-                      ? "bg-gray-800 text-white"
-                      : "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200"
-                  }`
+                  `sidebar-item ${isActive ? "sidebar-item-active" : ""}`
                 }
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-[18px] w-[18px]" />
                 {label}
               </NavLink>
             ))}
           </>
         )}
+
         {isAdmin() && (
           <>
-            <div className="pt-3 pb-1 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <div className="pt-5 pb-2 px-3 text-[10px] font-semibold text-white/30 uppercase tracking-widest">
               Admin
             </div>
             {adminItems.map(({ to, label, icon: Icon }) => (
@@ -92,14 +100,10 @@ export default function Sidebar() {
                 to={to}
                 end={to === "/admin"}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 ${
-                    isActive
-                      ? "bg-gray-800 text-white"
-                      : "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200"
-                  }`
+                  `sidebar-item ${isActive ? "sidebar-item-active" : ""}`
                 }
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-[18px] w-[18px]" />
                 {label}
               </NavLink>
             ))}
@@ -107,8 +111,12 @@ export default function Sidebar() {
         )}
       </nav>
 
-      <div className="px-6 py-4 border-t border-gray-800 text-xs text-gray-500">
-        IEMCRP v1.0
+      {/* Footer */}
+      <div className="relative px-6 py-4 border-t border-white/5">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-[11px] text-white/30 font-medium">System Online</span>
+        </div>
       </div>
     </div>
   )

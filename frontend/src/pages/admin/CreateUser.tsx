@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createAdminUser } from "@/lib/api";
-import { Card } from "@/components/ui/Card";
+import { UserPlus, ArrowLeft } from "lucide-react";
 
 export default function CreateUser() {
   const navigate = useNavigate();
@@ -40,75 +40,93 @@ export default function CreateUser() {
   }
 
   return (
-    <div className="max-w-lg mx-auto space-y-6">
-      <h1 className="text-2xl font-semibold text-slate-900">Create User</h1>
+    <div className="max-w-lg mx-auto space-y-6 animate-fade-in">
+      {/* Header */}
+      <div>
+        <button
+          onClick={() => navigate("/admin/users")}
+          className="inline-flex items-center gap-1.5 text-sm text-surface-500 hover:text-surface-700 mb-3 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to users
+        </button>
+        <h1 className="text-2xl font-bold text-surface-900">Create User</h1>
+        <p className="text-sm text-surface-500 mt-1">Add a new user to the system</p>
+      </div>
 
-      <Card>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <div className="text-sm text-red-600 bg-red-50 rounded-md p-3" role="alert" aria-live="polite">{error}</div>}
+      <div className="card-modern p-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {error && (
+            <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-700 flex items-center gap-3" role="alert" aria-live="polite">
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center">
+                <span className="text-red-600 text-xs font-bold">!</span>
+              </div>
+              {error}
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+              <label className="block text-sm font-semibold text-surface-900 mb-2">First Name</label>
               <input
                 type="text"
                 required
                 value={form.firstName}
                 onChange={set("firstName")}
-                className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="input-modern"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+              <label className="block text-sm font-semibold text-surface-900 mb-2">Last Name</label>
               <input
                 type="text"
                 required
                 value={form.lastName}
                 onChange={set("lastName")}
-                className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="input-modern"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Username</label>
+            <label className="block text-sm font-semibold text-surface-900 mb-2">Username</label>
             <input
               type="text"
               required
               value={form.username}
               onChange={set("username")}
-              className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-modern"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <label className="block text-sm font-semibold text-surface-900 mb-2">Email</label>
             <input
               type="email"
               required
               value={form.email}
               onChange={set("email")}
-              className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-modern"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <label className="block text-sm font-semibold text-surface-900 mb-2">Password</label>
             <input
               type="password"
               required
               value={form.password}
               onChange={set("password")}
-              className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-modern"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Role</label>
+            <label className="block text-sm font-semibold text-surface-900 mb-2">Role</label>
             <select
               value={form.role}
               onChange={set("role")}
-              className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="input-modern"
             >
               <option value="STUDENT">Student</option>
               <option value="STAFF">Staff</option>
@@ -119,33 +137,33 @@ export default function CreateUser() {
           {form.role === "STUDENT" && (
             <>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Department</label>
+                <label className="block text-sm font-semibold text-surface-900 mb-2">Department</label>
                 <input
                   type="text"
                   value={form.department}
                   onChange={set("department")}
-                  className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="input-modern"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Semester</label>
+                  <label className="block text-sm font-semibold text-surface-900 mb-2">Semester</label>
                   <input
                     type="number"
                     min={1}
                     max={8}
                     value={form.semester}
                     onChange={set("semester")}
-                    className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="input-modern"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Roll Number</label>
+                  <label className="block text-sm font-semibold text-surface-900 mb-2">Roll Number</label>
                   <input
                     type="text"
                     value={form.rollNumber}
                     onChange={set("rollNumber")}
-                    className="h-10 w-full border border-slate-300 rounded-md px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="input-modern"
                   />
                 </div>
               </div>
@@ -156,12 +174,22 @@ export default function CreateUser() {
             type="submit"
             disabled={loading}
             aria-busy={loading}
-            className="w-full h-10 rounded-md bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 transition-colors"
+            className="btn-primary w-full"
           >
-            {loading ? "Creating..." : "Create User"}
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Creating...
+              </div>
+            ) : (
+              <>
+                <UserPlus className="h-4 w-4" />
+                Create User
+              </>
+            )}
           </button>
         </form>
-      </Card>
+      </div>
     </div>
   );
 }

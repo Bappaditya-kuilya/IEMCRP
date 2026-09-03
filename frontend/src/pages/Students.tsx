@@ -1,8 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { apiFetch } from "@/lib/api";
-import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Search } from "lucide-react";
+import { Search, Users } from "lucide-react";
 
 interface Student {
   id: string;
@@ -35,49 +34,80 @@ export default function Students() {
     );
   }, [students, search]);
 
-  if (error) return <div className="text-sm text-red-600" role="alert" aria-live="polite">{error}</div>;
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3">
+            <span className="text-red-600 text-lg">!</span>
+          </div>
+          <p className="text-sm text-red-600" role="alert" aria-live="polite">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-semibold text-slate-900">Students</h1>
-
-      <div className="relative max-w-sm">
-        <label htmlFor="student-search" className="sr-only">Search students</label>
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-        <input
-          id="student-search"
-          type="text"
-          placeholder="Search by name, roll, or department..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="h-10 w-full border border-slate-300 rounded-md pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        />
+    <div className="space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-surface-900">Students</h1>
+          <p className="text-sm text-surface-500 mt-1">{filtered.length} students found</p>
+        </div>
+        <div className="relative">
+          <label htmlFor="student-search" className="sr-only">Search students</label>
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-surface-400" />
+          <input
+            id="student-search"
+            type="text"
+            placeholder="Search by name, roll, or department..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="input-modern pl-10 w-full sm:w-80"
+          />
+        </div>
       </div>
 
+      {/* Empty state */}
       {filtered.length === 0 && (
-        <p className="text-sm text-slate-600">No students found.</p>
+        <div className="card-modern p-12 text-center">
+          <div className="w-12 h-12 rounded-full bg-surface-100 flex items-center justify-center mx-auto mb-3">
+            <Users className="h-6 w-6 text-surface-400" />
+          </div>
+          <p className="text-sm text-surface-500">No students found.</p>
+        </div>
       )}
 
       {/* Desktop table */}
-      <Card className="hidden md:block overflow-x-auto">
-        <table className="w-full text-sm text-left" aria-label="Students">
+      <div className="card-modern hidden md:block overflow-hidden">
+        <table className="table-modern" aria-label="Students">
           <thead>
-            <tr className="border-b border-slate-200">
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Name</th>
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Roll No</th>
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Department</th>
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Semester</th>
-              <th scope="col" className="py-3 px-4 font-medium text-slate-600">Status</th>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Roll No</th>
+              <th scope="col">Department</th>
+              <th scope="col">Semester</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((s) => (
-              <tr key={s.id} className="border-b border-slate-100 hover:bg-slate-50">
-                <td className="py-3 px-4 text-slate-900">{s.name}</td>
-                <td className="py-3 px-4 text-slate-700">{s.rollNumber}</td>
-                <td className="py-3 px-4 text-slate-700">{s.department}</td>
-                <td className="py-3 px-4 text-slate-700">{s.semester}</td>
-                <td className="py-3 px-4">
+              <tr key={s.id}>
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center">
+                      <span className="text-xs font-bold text-primary-700">
+                        {s.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                      </span>
+                    </div>
+                    <span className="font-medium text-surface-900">{s.name}</span>
+                  </div>
+                </td>
+                <td className="font-mono text-sm text-surface-600">{s.rollNumber}</td>
+                <td className="text-surface-600">{s.department}</td>
+                <td className="text-surface-600">Sem {s.semester}</td>
+                <td>
                   <Badge variant={s.status === "active" ? "active" : "pending"}>
                     {s.status}
                   </Badge>
@@ -86,21 +116,34 @@ export default function Students() {
             ))}
           </tbody>
         </table>
-      </Card>
+      </div>
 
       {/* Mobile cards */}
       <div className="md:hidden space-y-3">
         {filtered.map((s) => (
-          <Card key={s.id}>
-            <div className="flex justify-between items-start mb-1">
-              <p className="font-medium text-slate-900">{s.name}</p>
+          <div key={s.id} className="card-modern p-4">
+            <div className="flex justify-between items-start mb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-primary-100 flex items-center justify-center">
+                  <span className="text-sm font-bold text-primary-700">
+                    {s.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                  </span>
+                </div>
+                <div>
+                  <p className="font-semibold text-surface-900">{s.name}</p>
+                  <p className="text-xs text-surface-500 font-mono">{s.rollNumber}</p>
+                </div>
+              </div>
               <Badge variant={s.status === "active" ? "active" : "pending"}>
                 {s.status}
               </Badge>
             </div>
-            <p className="text-sm text-slate-600">Roll: {s.rollNumber}</p>
-            <p className="text-xs text-slate-600 mt-1">{s.department} &middot; Sem {s.semester}</p>
-          </Card>
+            <div className="flex items-center gap-2 text-xs text-surface-500 mt-2">
+              <span>{s.department}</span>
+              <span>·</span>
+              <span>Sem {s.semester}</span>
+            </div>
+          </div>
         ))}
       </div>
     </div>
