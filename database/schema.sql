@@ -119,3 +119,99 @@ CREATE INDEX idx_notices_expires_at ON notices(expires_at);
 CREATE INDEX idx_audit_log_user_id ON audit_log(user_id);
 CREATE INDEX idx_audit_log_entity ON audit_log(entity_type, entity_id);
 CREATE INDEX idx_audit_log_created_at ON audit_log(created_at);
+
+-- Courses
+CREATE TABLE courses (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    college_id UUID NOT NULL REFERENCES colleges(id) ON DELETE RESTRICT,
+    code VARCHAR(20) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    credits INT NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    description TEXT,
+    prerequisites TEXT,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+CREATE UNIQUE INDEX idx_courses_college_code ON courses(college_id, code);
+
+-- Course Sections
+CREATE TABLE course_sections (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    course_id UUID NOT NULL REFERENCES courses(id) ON DELETE CASCADE,
+    college_id UUID NOT NULL REFERENCES colleges(id) ON DELETE RESTRICT,
+    instructor_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    semester INT NOT NULL,
+    academic_year INT NOT NULL,
+    schedule TEXT,
+    room VARCHAR(50),
+    max_capacity INT NOT NULL,
+    current_enrollment INT NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'OPEN',
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+-- Enrollments
+CREATE TABLE enrollments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    student_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+    section_id UUID NOT NULL REFERENCES course_sections(id) ON DELETE CASCADE,
+    college_id UUID NOT NULL REFERENCES colleges(id) ON DELETE RESTRICT,
+    status VARCHAR(20) NOT NULL DEFAULT 'ENROLLED',
+    enrolled_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    dropped_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE UNIQUE INDEX idx_enrollments_student_section ON enrollments(student_id, section_id);
+
+-- Grades
+CREATE TABLE grades (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    enrollment_id UUID NOT NULL REFERENCES enrollments(id) ON DELETE CASCADE,
+    student_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+    section_id UUID NOT NULL REFERENCES course_sections(id) ON DELETE CASCADE,
+    college_id UUID NOT NULL REFERENCES colleges(id) ON DELETE RESTRICT,
+    grade VARCHAR(2),
+    marks DECIMAL(5,2),
+    graded_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    graded_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+-- Fee Structures
+CREATE TABLE fee_structures (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    college_id UUID NOT NULL REFERENCES colleges(id) ON DELETE RESTRICT,
+    name VARCHAR(100) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    semester INT,
+    academic_year INT,
+    due_date DATE,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+-- Invoices
+CREATE TABLE invoices (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    student_id UUID NOT NULL REFERENCES students(id) ON DELETE CASCADE,
+    fee_structure_id UUID NOT NULL REFERENCES fee_structures(id) ON DELETE RESTRICT,
+    college_id UUID NOT NULL REFERENCES colleges(id) ON DELETE RESTRICT,
+    total_amount DECIMAL(10,2) NOT NULL,
+    paid_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+    due_date DATE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+-- Payments
+CREATE TABLE payments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    invoice_id UUID NOT NULL REFERENCES invoices(id) ON DELETE CASCADE,
+    college_id UUID NOT NULL REFERENCES colleges(id) ON DELETE RESTRICT,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_method VARCHAR(50),
+    transaction_id VARCHAR(100),
+    paid_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
