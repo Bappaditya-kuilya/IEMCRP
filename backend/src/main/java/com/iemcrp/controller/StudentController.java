@@ -7,6 +7,7 @@ import com.iemcrp.model.*;
 import com.iemcrp.repository.*;
 import com.iemcrp.security.JwtUserDetails;
 import com.iemcrp.service.AuditService;
+import com.iemcrp.service.GpaCalculationService;
 import com.iemcrp.service.ResultCacheService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +37,7 @@ public class StudentController {
     private final ExamRepository examRepository;
     private final AuditService auditService;
     private final ResultCacheService resultCacheService;
+    private final GpaCalculationService gpaCalculationService;
     private final ObjectMapper objectMapper;
 
     public StudentController(StudentRepository studentRepository,
@@ -45,6 +47,7 @@ public class StudentController {
                              ExamRepository examRepository,
                              AuditService auditService,
                              ResultCacheService resultCacheService,
+                             GpaCalculationService gpaCalculationService,
                              ObjectMapper objectMapper) {
         this.studentRepository = studentRepository;
         this.resultRepository = resultRepository;
@@ -53,6 +56,7 @@ public class StudentController {
         this.examRepository = examRepository;
         this.auditService = auditService;
         this.resultCacheService = resultCacheService;
+        this.gpaCalculationService = gpaCalculationService;
         this.objectMapper = objectMapper;
     }
 
@@ -221,5 +225,31 @@ public class StudentController {
         resp.setExamType(r.getExam().getExamType().name());
         resp.setCreatedAt(r.getCreatedAt());
         return resp;
+    }
+
+    @GetMapping("/gpa")
+    @RateLimiter(name = "api")
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public ResponseEntity<?> gpa(
+            @RequestParam(required = false) Integer semester,
+            @RequestParam(required = false) Integer academicYear) {
+        JwtUserDetails userDetails = getUserDetails();
+        Student student = getStudentByUserId(userDetails.getUserId());
+
+        java.util.Map<String, Object> result = new java.util.HashMap<>();
+        result.put("studentId", student.getId());
+        result.put("rollNumber", student.getRollNumber());
+
+        if (semester != null && academicYear != null) {
+            double semGpa = gpaCalculationService.calculateSemesterGpa(student.getId(), semester, academicYear);
+            result.put("semesterGpa", Math.round(semGpa * 100.0) / 100.0);
+            result.put("semester", semester);
+            result.put("academicYear", academicYear);
+        }
+
+        double cumulativeGpa = gpaCalculationService.calculateCumulativeGpa(student.getId());
+        result.put("cumulativeGpa", Math.round(cumulativeGpa * 100.0) / 100.0);
+
+        return ResponseEntity.ok(result);
     }
 }
