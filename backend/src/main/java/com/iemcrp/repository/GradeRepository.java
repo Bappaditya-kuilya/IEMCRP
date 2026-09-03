@@ -1,6 +1,7 @@
 package com.iemcrp.repository;
 
 import com.iemcrp.model.Grade;
+import com.iemcrp.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,5 @@ public interface GradeRepository extends JpaRepository<Grade, UUID> {
     List<Grade> findByEnrollmentId(UUID enrollmentId);
     List<Grade> findByStudentIdAndSectionId(UUID studentId, UUID sectionId);
     List<Grade> findByCollegeId(UUID collegeId);
-    List<Grade> findByGradedBy(UUID gradedByUserId);
+    List<Grade> findByGradedBy(User gradedBy);
 }

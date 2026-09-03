@@ -120,6 +120,7 @@ public class CourseController {
 
     @GetMapping("/{id}/sections")
     @RateLimiter(name = "api")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> listSections(@PathVariable UUID id) {
         JwtUserDetails details = getUserDetails();
         var course = courseRepository.findByIdAndCollegeId(id, details.getCollegeId());

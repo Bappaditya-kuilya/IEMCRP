@@ -30,8 +30,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/health").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/student/**").hasRole("STUDENT")
-                .requestMatchers("/api/staff/**").hasRole("STAFF")
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                .requestMatchers("/api/student/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers("/api/staff/**").hasAnyRole("STAFF", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )

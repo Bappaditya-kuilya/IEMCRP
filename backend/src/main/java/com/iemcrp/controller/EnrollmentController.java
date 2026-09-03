@@ -115,19 +115,44 @@ public class EnrollmentController {
 
     @GetMapping
     @RateLimiter(name = "api")
-    public ResponseEntity<List<Enrollment>> myEnrollments() {
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<Map<String, Object>>> myEnrollments() {
         JwtUserDetails details = getUserDetails();
         Student student = getStudentByUserId(details.getUserId());
-        return ResponseEntity.ok(enrollmentRepository.findByStudentId(student.getId()));
+        List<Enrollment> enrollments = enrollmentRepository.findByStudentId(student.getId());
+        return ResponseEntity.ok(enrollments.stream().map(e -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", e.getId());
+            map.put("status", e.getStatus());
+            map.put("enrolledAt", e.getEnrolledAt());
+            map.put("sectionId", e.getSection().getId());
+            map.put("courseCode", e.getSection().getCourse().getCode());
+            map.put("courseName", e.getSection().getCourse().getName());
+            map.put("semester", e.getSection().getSemester());
+            map.put("academicYear", e.getSection().getAcademicYear());
+            return map;
+        }).toList());
     }
 
     @GetMapping("/all")
     @RateLimiter(name = "api")
-    public ResponseEntity<List<Enrollment>> allEnrollments() {
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<Map<String, Object>>> allEnrollments() {
         JwtUserDetails details = getUserDetails();
         if (!isStaffOrAdmin(details)) {
             return ResponseEntity.status(403).body(List.of());
         }
-        return ResponseEntity.ok(enrollmentRepository.findByCollegeId(details.getCollegeId()));
+        List<Enrollment> enrollments = enrollmentRepository.findByCollegeId(details.getCollegeId());
+        return ResponseEntity.ok(enrollments.stream().map(e -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", e.getId());
+            map.put("status", e.getStatus());
+            map.put("enrolledAt", e.getEnrolledAt());
+            map.put("studentName", e.getStudent().getUser().getFirstName() + " " + e.getStudent().getUser().getLastName());
+            map.put("rollNumber", e.getStudent().getRollNumber());
+            map.put("courseCode", e.getSection().getCourse().getCode());
+            map.put("courseName", e.getSection().getCourse().getName());
+            return map;
+        }).toList());
     }
 }
