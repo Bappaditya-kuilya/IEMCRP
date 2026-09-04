@@ -423,4 +423,6 @@ app.use((err, _req, res, _next) => {
 // ── Start ─────────────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`UEM Backend running on http://localhost:${PORT}`);
+  console.log(`API endpoints available at /api/*`);
+  console.log(`Demo student: UEM/2023/CSE/401 / uem123`);
 });
