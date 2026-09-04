@@ -284,6 +284,12 @@ api.post('/apply', (req, res) => {
   if (!name || !email || !program) {
     return res.status(400).json({ error: 'Name, email, and program are required.' });
   }
+  if (!email.includes('@')) {
+    return res.status(400).json({ error: 'Invalid email address.' });
+  }
+  if (name.length < 2) {
+    return res.status(400).json({ error: 'Name must be at least 2 characters.' });
+  }
   const appId = 'UEM' + Date.now().toString(36).toUpperCase();
   console.log(`[Apply] ${appId}: ${name} <${email}> — ${program}`);
   res.json({ success: true, applicationId: appId, message: `Application ${appId} submitted successfully. You will receive a confirmation email shortly.` });
