@@ -162,6 +162,8 @@ const campus = {
     { name: 'Cafeteria', description: 'Multi-cuisine cafeteria and juice bar serving 2000+ students daily', icon: 'fa-utensils' },
     { name: 'Medical Center', description: 'On-campus medical center with ambulance facility and tie-up with nearest hospital', icon: 'fa-medkit' },
     { name: 'Innovation Lab', description: 'Dedicated space for robotics, 3D printing, and IoT prototyping', icon: 'fa-flask' },
+    { name: 'Seminar Hall', description: '200-capacity hall for workshops, guest lectures, and faculty meetings', icon: 'fa-chalkboard-teacher' },
+    { name: 'Open Air Theatre', description: 'Amphitheatre for cultural events, performances, and student gatherings', icon: 'fa-music' },
   ],
   departments: ['CSE', 'ECE', 'EE', 'ME', 'CE', 'IT', 'MBA', 'MCA', 'BCA', 'BBA', 'B.Sc', 'Ph.D'],
 };
