@@ -403,10 +403,13 @@ api.get('/student/profile', authMiddleware, (req, res) => {
 
 api.get('/student/grades', authMiddleware, (req, res) => {
   const data = grades.get(req.user.id) || [];
-  const totalCredits = data.flatMap(s => s.subjects).reduce((a, b) => a + b.credits, 0);
-  const totalPoints = data.flatMap(s => s.subjects).reduce((a, b) => a + b.credits * (gradePoints[b.grade] || 0), 0);
+  const allSubjects = data.flatMap(s => s.subjects);
+  const totalCredits = allSubjects.reduce((a, b) => a + b.credits, 0);
+  const totalPoints = allSubjects.reduce((a, b) => a + b.credits * (gradePoints[b.grade] || 0), 0);
   const cgpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : '0.00';
-  res.json({ semesters: data, cgpa: Number(cgpa), totalCredits });
+  const gradeDistribution = {};
+  allSubjects.forEach(s => { gradeDistribution[s.grade] = (gradeDistribution[s.grade] || 0) + 1; });
+  res.json({ semesters: data, cgpa: Number(cgpa), totalCredits, gradeDistribution });
 });
 
 api.get('/student/attendance', authMiddleware, (req, res) => {
