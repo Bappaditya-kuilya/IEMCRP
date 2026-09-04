@@ -432,11 +432,14 @@ api.get('/student/dashboard', authMiddleware, (req, res) => {
   const f = fees.get(req.user.id) || [];
   const pendingFee = f.filter(x => x.status === 'pending').reduce((sum, x) => sum + x.amount, 0);
   const latestSem = g[g.length - 1];
+  const lib = libraryBooks.get(req.user.id) || [];
+  const booksIssued = lib.filter(b => b.status === 'issued').length;
   res.json({
     name: u.name, id: u.id, department: u.department, semester: u.semester, program: u.program,
     cgpa: latestSem?.semGpa || 0, attendance: a?.overall || 0,
     pendingFee, nextDue: f.find(x => x.status === 'pending')?.dueDate || '',
     recentGrades: latestSem?.subjects || [],
+    booksIssued,
   });
 });
 
