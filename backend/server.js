@@ -269,6 +269,12 @@ api.post('/contact', (req, res) => {
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'Name, email, and message are required.' });
   }
+  if (!email.includes('@')) {
+    return res.status(400).json({ error: 'Invalid email address.' });
+  }
+  if (message.length < 10) {
+    return res.status(400).json({ error: 'Message must be at least 10 characters.' });
+  }
   console.log(`[Contact] ${name} <${email}> — ${subject || 'No subject'}: ${message.slice(0, 100)}`);
   res.json({ success: true, message: 'Thank you for reaching out. We will get back to you within 2-3 business days.' });
 });
