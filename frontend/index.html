@@ -15,7 +15,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&family=Roboto+Slab:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Source+Sans+Pro:wght@300;400;600;700&family=Roboto+Slab:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         /* ============================================
@@ -23,20 +23,33 @@
            ============================================ */
 
         :root {
-            --uemp-red: #DC2626;
-            --uemp-red-dark: #B91C1C;
-            --uemp-navy: #0B1B3D;
-            --uemp-navy-light: #1E293B;
+            /* Academic ERP Design System */
+            --uemp-maroon: #800000;
+            --uemp-maroon-dark: #600000;
+            --uemp-olive: #8A8A00;
+            --uemp-olive-dark: #6B6B00;
+            --uemp-mustard: #C2C200;
+            --uemp-neutral: #FFCFFF;
+            --uemp-surface: #FFF7FF;
+            --uemp-on-surface: #000000;
+            --uemp-link: #0000EE;
+            --uemp-border: #E5E7EB;
+            --uemp-error: #B00020;
+            /* Semantic aliases */
+            --uemp-red: var(--uemp-maroon);
+            --uemp-red-dark: var(--uemp-maroon-dark);
+            --uemp-navy: #1a1a2e;
+            --uemp-navy-light: #2d2d44;
             --uemp-white: #FFFFFF;
-            --uemp-light-gray: #F8F9FA;
-            --uemp-gray: #E5E7EB;
-            --uemp-text: #333333;
-            --uemp-text-light: #6B7280;
-            --uemp-green: #065F46;
-            --uemp-green-light: #059669;
-            --uemp-gold: #D97706;
-            --font-heading: 'Oswald', sans-serif;
-            --font-body: 'Source Sans Pro', sans-serif;
+            --uemp-light-gray: #F5F5F5;
+            --uemp-gray: var(--uemp-border);
+            --uemp-text: #1a1a1a;
+            --uemp-text-light: #555555;
+            --uemp-green: #2d6a4f;
+            --uemp-green-light: #40916c;
+            --uemp-gold: var(--uemp-mustard);
+            --font-heading: 'Merriweather', 'Georgia', serif;
+            --font-body: 'Source Sans Pro', 'Segoe UI', sans-serif;
             --font-accent: 'Roboto Slab', serif;
         }
 
@@ -92,7 +105,7 @@
             top: -100%;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             color: white;
             padding: 12px 24px;
             z-index: 10000;
@@ -109,7 +122,7 @@
            Top Utility Bar
            ============================================ */
         .utility-bar {
-            background: var(--uemp-navy);
+            background: #1a1a2e;
             color: white;
             font-size: 13px;
             padding: 6px 0;
@@ -141,7 +154,7 @@
            Header / Branding
            ============================================ */
         .site-header {
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             position: relative;
             z-index: 1000;
         }
@@ -159,8 +172,8 @@
             gap: 14px;
         }
         .logo-mark {
-            width: 52px;
-            height: 52px;
+            width: 56px;
+            height: 56px;
             flex-shrink: 0;
         }
         .logo-text {
@@ -239,7 +252,7 @@
             font-family: var(--font-body);
         }
         .search-form button {
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -250,7 +263,7 @@
             font-size: 16px;
         }
         .search-form button:hover {
-            background: var(--uemp-red-dark);
+            background: var(--uemp-maroon-dark);
         }
 
         /* Mobile Menu Toggle */
@@ -268,7 +281,7 @@
            Navigation
            ============================================ */
         .main-nav {
-            background: var(--uemp-navy);
+            background: #1a1a2e;
             position: relative;
             z-index: 998;
         }
@@ -314,7 +327,7 @@
             min-width: 240px;
             background: white;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            border-top: 3px solid var(--uemp-red);
+            border-top: 3px solid var(--uemp-maroon);
             z-index: 999;
         }
         .nav-item:hover .dropdown {
@@ -330,7 +343,7 @@
         }
         .dropdown a:hover {
             background: var(--uemp-light-gray);
-            color: var(--uemp-red);
+            color: var(--uemp-maroon);
             padding-left: 24px;
         }
 
@@ -342,7 +355,7 @@
             min-height: 500px;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, var(--uemp-navy) 0%, var(--uemp-red-dark) 50%, var(--uemp-red) 100%);
+            background: linear-gradient(135deg, var(--uemp-maroon) 0%, var(--uemp-olive) 50%, #1a1a2e 100%);
             overflow: hidden;
         }
         .hero::before {
@@ -353,8 +366,8 @@
             right: 0;
             bottom: 0;
             background:
-                radial-gradient(circle at 20% 50%, rgba(220,38,38,0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(11,27,61,0.5) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(128,0,0,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(138,138,0,0.3) 0%, transparent 50%);
         }
         .hero-content {
             position: relative;
@@ -387,7 +400,7 @@
             border-radius: 4px 0 0 4px;
         }
         .hero-search button {
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             color: white;
             border: none;
             padding: 14px 22px;
@@ -397,7 +410,7 @@
             transition: background 0.2s;
         }
         .hero-search button:hover {
-            background: var(--uemp-red-dark);
+            background: var(--uemp-maroon-dark);
         }
 
         /* ============================================
@@ -428,7 +441,7 @@
         }
         .quicklinks-inner a:hover {
             background: var(--uemp-light-gray);
-            color: var(--uemp-red);
+            color: var(--uemp-maroon);
         }
         .quicklinks-inner .info-for {
             display: flex;
@@ -447,7 +460,7 @@
            Section 1: Split Welcome (Green/Dark)
            ============================================ */
         .split-welcome {
-            background: var(--uemp-green);
+            background: var(--uemp-olive);
             color: white;
         }
         .split-inner {
@@ -471,7 +484,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--uemp-navy), var(--uemp-red-dark));
+            background: linear-gradient(135deg, var(--uemp-maroon), #1a1a2e);
             color: white;
             text-align: center;
             padding: 40px;
@@ -479,7 +492,7 @@
         .split-video .play-btn {
             width: 72px;
             height: 72px;
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -491,7 +504,7 @@
         }
         .split-video .play-btn:hover {
             transform: scale(1.1);
-            background: var(--uemp-red-dark);
+            background: var(--uemp-maroon-dark);
         }
         .split-video .play-btn i {
             font-size: 28px;
@@ -539,11 +552,11 @@
             text-decoration: none;
         }
         .btn-primary {
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             color: white;
         }
         .btn-primary:hover {
-            background: var(--uemp-red-dark);
+            background: var(--uemp-maroon-dark);
             color: white;
         }
         .btn-outline {
@@ -553,19 +566,19 @@
         }
         .btn-outline:hover {
             background: white;
-            color: var(--uemp-green);
+            color: var(--uemp-olive);
         }
         .btn-dark {
-            background: var(--uemp-navy);
+            background: #1a1a2e;
             color: white;
         }
         .btn-dark:hover {
-            background: var(--uemp-navy-light);
+            background: #2d2d44;
             color: white;
         }
         .btn-white {
             background: white;
-            color: var(--uemp-red);
+            color: var(--uemp-maroon);
         }
         .btn-white:hover {
             background: var(--uemp-light-gray);
@@ -595,7 +608,7 @@
         }
         .section-intro .highlight {
             font-weight: 600;
-            color: var(--uemp-red);
+            color: var(--uemp-maroon);
         }
         .section-intro .btn-group {
             justify-content: center;
@@ -608,7 +621,7 @@
         .section-stats {
             position: relative;
             padding: 80px 0;
-            background: linear-gradient(135deg, var(--uemp-navy) 0%, var(--uemp-red-dark) 100%);
+            background: linear-gradient(135deg, var(--uemp-maroon) 0%, var(--uemp-olive) 100%);
             color: white;
             overflow: hidden;
         }
@@ -619,7 +632,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%230B1B3D" width="1200" height="600"/></svg>') center/cover;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23800000" width="1200" height="600"/></svg>') center/cover;
             opacity: 0.15;
         }
         .stats-content {
@@ -690,7 +703,7 @@
         .split-image-left .split-media .media-placeholder i {
             font-size: 48px;
             margin-bottom: 12px;
-            color: var(--uemp-red);
+            color: var(--uemp-maroon);
             opacity: 0.5;
         }
         .split-undergrad .split-text {
@@ -699,7 +712,7 @@
         }
         .split-undergrad .split-text h2 {
             font-size: 32px;
-            color: var(--uemp-navy);
+            color: var(--uemp-maroon);
             margin-bottom: 16px;
         }
         .split-undergrad .split-text p {
@@ -713,14 +726,14 @@
            Section 5: Split Graduate (Green, Image Right)
            ============================================ */
         .split-graduate {
-            background: var(--uemp-green);
+            background: var(--uemp-maroon);
             color: white;
         }
         .split-graduate .split-inner {
             grid-template-columns: 1fr 1fr;
         }
         .split-graduate .split-text {
-            background: var(--uemp-green);
+            background: var(--uemp-maroon);
             padding: 48px 40px;
         }
         .split-graduate .split-text h2 {
@@ -742,7 +755,7 @@
             width: 100%;
             height: 100%;
             min-height: 380px;
-            background: linear-gradient(135deg, rgba(5,150,105,0.3) 0%, rgba(6,95,70,0.5) 100%);
+            background: linear-gradient(135deg, rgba(128,0,0,0.3) 0%, rgba(138,138,0,0.5) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -765,7 +778,7 @@
         .section-why h2 {
             font-size: 36px;
             text-align: center;
-            color: var(--uemp-navy);
+            color: var(--uemp-maroon);
             margin-bottom: 48px;
         }
         .why-grid {
@@ -788,7 +801,7 @@
         .why-card .icon {
             width: 64px;
             height: 64px;
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -813,7 +826,7 @@
            ============================================ */
         .section-cta {
             padding: 72px 0;
-            background: var(--uemp-navy);
+            background: var(--uemp-maroon);
             color: white;
             text-align: center;
         }
@@ -837,10 +850,10 @@
            Footer
            ============================================ */
         .site-footer {
-            background: var(--uemp-navy);
+            background: #1a1a2e;
             color: rgba(255,255,255,0.8);
             padding: 48px 0 0;
-            border-top: 4px solid var(--uemp-red);
+            border-top: 4px solid var(--uemp-maroon);
         }
         .footer-top {
             display: grid;
@@ -919,7 +932,7 @@
             transition: all 0.2s;
         }
         .social-links a:hover {
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             color: white;
         }
         .footer-bottom {
@@ -940,7 +953,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--uemp-navy);
+            background: #1a1a2e;
             z-index: 10000;
             overflow-y: auto;
             padding: 80px 24px 40px;
@@ -968,7 +981,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .mobile-nav .mobile-nav-list a:hover {
-            color: var(--uemp-red);
+            color: var(--uemp-maroon);
         }
         .mobile-nav .mobile-dropdown {
             display: none;
@@ -1116,10 +1129,10 @@
         .page-section h2 {
             font-family: var(--font-heading);
             font-size: 36px;
-            color: var(--uemp-navy);
+            color: var(--uemp-maroon);
             margin-bottom: 32px;
             padding-bottom: 12px;
-            border-bottom: 3px solid var(--uemp-red);
+            border-bottom: 3px solid var(--uemp-maroon);
             display: inline-block;
         }
 
@@ -1132,9 +1145,9 @@
         }
         .filter-btn {
             padding: 8px 20px;
-            border: 2px solid var(--uemp-navy);
+            border: 2px solid var(--uemp-maroon);
             background: transparent;
-            color: var(--uemp-navy);
+            color: var(--uemp-maroon);
             border-radius: 4px;
             cursor: pointer;
             font-family: var(--font-body);
@@ -1143,7 +1156,7 @@
             transition: all 0.2s;
         }
         .filter-btn:hover, .filter-btn.active {
-            background: var(--uemp-navy);
+            background: var(--uemp-maroon);
             color: white;
         }
         .programs-grid {
@@ -1164,7 +1177,7 @@
         }
         .program-degree {
             display: inline-block;
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             color: white;
             padding: 2px 10px;
             border-radius: 4px;
@@ -1187,7 +1200,7 @@
             flex-wrap: wrap;
         }
         .program-meta i {
-            color: var(--uemp-red);
+            color: var(--uemp-maroon);
             margin-right: 4px;
         }
 
@@ -1196,7 +1209,7 @@
         .notice-card {
             background: white;
             border: 1px solid #e5e7eb;
-            border-left: 4px solid var(--uemp-red);
+            border-left: 4px solid var(--uemp-maroon);
             border-radius: 0 8px 8px 0;
             padding: 20px 24px;
         }
@@ -1230,7 +1243,7 @@
         }
         .event-date-badge {
             display: inline-block;
-            background: var(--uemp-navy);
+            background: var(--uemp-maroon);
             color: white;
             padding: 4px 12px;
             border-radius: 4px;
@@ -1258,7 +1271,7 @@
         }
         .placement-stat {
             text-align: center;
-            background: var(--uemp-navy);
+            background: var(--uemp-maroon);
             color: white;
             padding: 28px 16px;
             border-radius: 8px;
@@ -1292,7 +1305,7 @@
         .about-text p { font-size: 16px; line-height: 1.8; color: #4b5563; margin-bottom: 16px; }
         .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .about-stat-item {
-            background: var(--uemp-navy);
+            background: var(--uemp-maroon);
             color: white;
             padding: 24px;
             border-radius: 8px;
@@ -1309,8 +1322,8 @@
         }
         .contact-info h3 { font-size: 22px; color: var(--uemp-navy); margin-bottom: 16px; }
         .contact-info p { font-size: 15px; margin-bottom: 12px; color: #4b5563; }
-        .contact-info i { color: var(--uemp-red); width: 20px; margin-right: 8px; }
-        .contact-info a { color: var(--uemp-red); }
+        .contact-info i { color: var(--uemp-maroon); width: 20px; margin-right: 8px; }
+        .contact-info a { color: var(--uemp-maroon); }
         .contact-form { display: flex; flex-direction: column; gap: 12px; }
         .contact-form input, .contact-form textarea {
             padding: 12px 16px;
@@ -1321,8 +1334,8 @@
         }
         .contact-form input:focus, .contact-form textarea:focus {
             outline: none;
-            border-color: var(--uemp-red);
-            box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+            border-color: var(--uemp-maroon);
+            box-shadow: 0 0 0 3px rgba(128,0,0,0.1);
         }
         .contact-form .btn { align-self: flex-start; }
         .form-success {
@@ -1340,7 +1353,7 @@
 
         /* Quicklinks */
         .quicklinks-bar {
-            background: var(--uemp-navy);
+            background: var(--uemp-maroon);
             padding: 10px 0;
         }
         .quicklinks-inner {
@@ -1379,7 +1392,7 @@
            ============================================ */
         .portal-root { display: flex; min-height: 80vh; background: #f3f4f6; }
         .portal-sidebar {
-            width: 240px; background: var(--uemp-navy); color: white; display: flex;
+            width: 240px; background: var(--uemp-maroon); color: white; display: flex;
             flex-direction: column; flex-shrink: 0;
         }
         .portal-sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -1414,14 +1427,14 @@
             color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s;
             background: none; border-top: none; border-left: none; border-right: none; font-family: var(--font-body);
         }
-        .auth-tab.active { color: var(--uemp-red); border-bottom-color: var(--uemp-red); }
+        .auth-tab.active { color: var(--uemp-maroon); border-bottom-color: var(--uemp-maroon); }
         .auth-error { background: #fef2f2; color: #991b1b; padding: 10px 14px; border-radius: 6px; font-size: 14px; margin-bottom: 12px; display: none; }
         .auth-success { background: #dcfce7; color: #166534; padding: 10px 14px; border-radius: 6px; font-size: 14px; margin-bottom: 12px; display: none; }
         .auth-form { display: flex; flex-direction: column; gap: 12px; }
         .auth-form input, .auth-form select {
             padding: 11px 14px; border: 1px solid #d1d5db; border-radius: 6px; font-family: var(--font-body); font-size: 14px;
         }
-        .auth-form input:focus, .auth-form select:focus { outline: none; border-color: var(--uemp-red); box-shadow: 0 0 0 3px rgba(220,38,38,0.1); }
+        .auth-form input:focus, .auth-form select:focus { outline: none; border-color: var(--uemp-maroon); box-shadow: 0 0 0 3px rgba(128,0,0,0.1); }
         .auth-form .row { display: flex; gap: 12px; }
         .auth-form .row > * { flex: 1; }
         .auth-hint { text-align: center; font-size: 13px; color: #9ca3af; margin-top: 12px; }
@@ -1434,9 +1447,9 @@
         .dash-stat .label { font-size: 13px; color: #6b7280; margin-bottom: 4px; }
         .dash-stat .value { font-size: 28px; font-family: var(--font-heading); font-weight: 700; color: var(--uemp-navy); }
         .dash-stat .sub { font-size: 12px; color: #9ca3af; margin-top: 2px; }
-        .dash-stat.red .value { color: var(--uemp-red); }
+        .dash-stat.red .value { color: var(--uemp-maroon); }
         .dash-section { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
-        .dash-section h3 { font-size: 16px; color: var(--uemp-navy); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--uemp-red); display: inline-block; }
+        .dash-section h3 { font-size: 16px; color: var(--uemp-maroon); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--uemp-maroon); display: inline-block; }
 
         /* Table styles */
         .portal-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -1466,7 +1479,7 @@
 
         /* Timetable */
         .timetable-grid { display: grid; grid-template-columns: 100px repeat(5, 1fr); gap: 1px; background: #e5e7eb; border-radius: 8px; overflow: hidden; }
-        .tt-header { background: var(--uemp-navy); color: white; padding: 10px 8px; font-size: 13px; font-weight: 600; text-align: center; }
+        .tt-header { background: var(--uemp-maroon); color: white; padding: 10px 8px; font-size: 13px; font-weight: 600; text-align: center; }
         .tt-time { background: #f9fafb; padding: 10px 8px; font-size: 12px; font-weight: 600; color: #374151; display: flex; align-items: center; }
         .tt-cell { background: white; padding: 8px; font-size: 12px; min-height: 60px; }
         .tt-cell .tt-subj { font-weight: 600; color: var(--uemp-navy); margin-bottom: 2px; }
@@ -1488,12 +1501,12 @@
         /* Profile */
         .profile-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 24px; }
         .profile-avatar {
-            width: 100px; height: 100px; border-radius: 50%; background: var(--uemp-red); color: white;
+            width: 100px; height: 100px; border-radius: 50%; background: var(--uemp-maroon); color: white;
             display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; margin: 0 auto 16px;
         }
         .profile-sidebar { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px; text-align: center; }
-        .profile-sidebar h3 { color: var(--uemp-navy); margin-bottom: 4px; }
-        .profile-sidebar .dept { color: var(--uemp-red); font-weight: 600; font-size: 14px; margin-bottom: 16px; }
+        .profile-sidebar h3 { color: var(--uemp-maroon); margin-bottom: 4px; }
+        .profile-sidebar .dept { color: var(--uemp-olive); font-weight: 600; font-size: 14px; margin-bottom: 16px; }
         .profile-info { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px; }
         .profile-row { display: flex; padding: 12px 0; border-bottom: 1px solid #f3f4f6; }
         .profile-row:last-child { border-bottom: none; }
@@ -1528,7 +1541,7 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             color: white;
             display: flex;
             align-items: center;
@@ -1537,8 +1550,8 @@
             font-weight: 700;
             margin-bottom: 12px;
         }
-        .faculty-card h3 { font-size: 17px; color: var(--uemp-navy); margin-bottom: 4px; }
-        .faculty-card .designation { font-size: 14px; color: var(--uemp-red); margin-bottom: 8px; font-weight: 600; }
+        .faculty-card h3 { font-size: 17px; color: var(--uemp-maroon); margin-bottom: 4px; }
+        .faculty-card .designation { font-size: 14px; color: var(--uemp-olive); margin-bottom: 8px; font-weight: 600; }
         .faculty-card .meta { font-size: 13px; color: #6b7280; line-height: 1.6; }
 
         /* Calendar */
@@ -1604,8 +1617,8 @@
         .apply-form select { cursor: pointer; }
         .apply-form input:focus, .apply-form select:focus {
             outline: none;
-            border-color: var(--uemp-red);
-            box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+            border-color: var(--uemp-maroon);
+            box-shadow: 0 0 0 3px rgba(128,0,0,0.1);
         }
         .apply-success {
             display: none;
@@ -1615,7 +1628,7 @@
         .apply-success i { font-size: 48px; color: #16a34a; margin-bottom: 16px; }
         .apply-success h3 { color: var(--uemp-navy); margin-bottom: 8px; }
         .apply-success p { color: #6b7280; }
-        .apply-success .app-id { font-family: monospace; font-size: 20px; color: var(--uemp-red); font-weight: 700; margin: 12px 0; }
+        .apply-success .app-id { font-family: monospace; font-size: 20px; color: var(--uemp-maroon); font-weight: 700; margin: 12px 0; }
 
         /* Research */
         .research-list { display: flex; flex-direction: column; gap: 16px; }
@@ -1634,7 +1647,7 @@
             color: #6b7280;
             margin-bottom: 8px;
         }
-        .research-meta i { color: var(--uemp-red); margin-right: 4px; }
+        .research-meta i { color: var(--uemp-maroon); margin-right: 4px; }
         .research-status {
             display: inline-block;
             padding: 2px 10px;
@@ -1667,7 +1680,7 @@
             width: 48px;
             height: 48px;
             border-radius: 10px;
-            background: var(--uemp-red);
+            background: var(--uemp-maroon);
             color: white;
             display: flex;
             align-items: center;
@@ -1675,7 +1688,7 @@
             font-size: 20px;
             margin-bottom: 12px;
         }
-        .facility-card h3 { font-size: 17px; color: var(--uemp-navy); margin-bottom: 6px; }
+        .facility-card h3 { font-size: 17px; color: var(--uemp-maroon); margin-bottom: 6px; }
         .facility-card p { font-size: 14px; color: #6b7280; line-height: 1.5; }
         .campus-depts {
             margin-top: 32px;
@@ -1684,7 +1697,7 @@
             gap: 8px;
         }
         .dept-tag {
-            background: var(--uemp-navy);
+            background: var(--uemp-olive);
             color: white;
             padding: 6px 14px;
             border-radius: 6px;
@@ -1752,20 +1765,7 @@
     <header class="site-header" id="site-header">
         <div class="header-inner">
             <a href="#home" class="logo-area" aria-label="UEM Home">
-                <svg class="logo-mark" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- UEM Logo: Red laurel wreath with UEM inside -->
-                    <circle cx="26" cy="26" r="25" stroke="white" stroke-width="1.5" fill="none"/>
-                    <!-- Laurel left -->
-                    <path d="M12 36 C8 30, 8 20, 14 14" stroke="white" stroke-width="1.5" fill="none"/>
-                    <path d="M10 32 C7 28, 8 22, 12 18" stroke="white" stroke-width="1" fill="none"/>
-                    <path d="M14 38 C10 32, 9 24, 16 16" stroke="white" stroke-width="1" fill="none"/>
-                    <!-- Laurel right -->
-                    <path d="M40 36 C44 30, 44 20, 38 14" stroke="white" stroke-width="1.5" fill="none"/>
-                    <path d="M42 32 C45 28, 44 22, 40 18" stroke="white" stroke-width="1" fill="none"/>
-                    <path d="M38 38 C42 32, 43 24, 36 16" stroke="white" stroke-width="1" fill="none"/>
-                    <!-- UEM text -->
-                    <text x="26" y="30" text-anchor="middle" font-family="Oswald, sans-serif" font-size="14" font-weight="700" fill="white">UEM</text>
-                </svg>
+                <img src="/public/UEM-Logo.png" alt="UEM Logo" class="logo-mark" style="width:56px;height:56px;object-fit:contain;">
                 <div class="logo-text">
                     <span class="university-name">University of Engineering & Management</span>
                     <span class="tagline">Good Education, Good Jobs</span>
@@ -2225,16 +2225,7 @@
                 <!-- Brand Column -->
                 <div class="footer-brand">
                     <div class="footer-logo">
-                        <svg class="logo-mark" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="26" cy="26" r="25" stroke="white" stroke-width="1.5" fill="none"/>
-                            <path d="M12 36 C8 30, 8 20, 14 14" stroke="white" stroke-width="1.5" fill="none"/>
-                            <path d="M10 32 C7 28, 8 22, 12 18" stroke="white" stroke-width="1" fill="none"/>
-                            <path d="M14 38 C10 32, 9 24, 16 16" stroke="white" stroke-width="1" fill="none"/>
-                            <path d="M40 36 C44 30, 44 20, 38 14" stroke="white" stroke-width="1.5" fill="none"/>
-                            <path d="M42 32 C45 28, 44 22, 40 18" stroke="white" stroke-width="1" fill="none"/>
-                            <path d="M38 38 C42 32, 43 24, 36 16" stroke="white" stroke-width="1" fill="none"/>
-                            <text x="26" y="30" text-anchor="middle" font-family="Oswald, sans-serif" font-size="14" font-weight="700" fill="white">UEM</text>
-                        </svg>
+                        <img src="/public/UEM-Logo.png" alt="UEM Logo" style="width:44px;height:44px;object-fit:contain;">
                         <span>UEM</span>
                     </div>
                     <div class="address">
@@ -2990,7 +2981,7 @@
             }).join('');
             var depts = data.departments.map(function(d) { return '<span class="dept-tag">' + d + '</span>'; }).join('');
             container.innerHTML = '<div class="campus-header"><h2>' + data.name + '</h2>' +
-                '<p><i class="fas fa-map-marker-alt" style="color:var(--uemp-red)"></i> ' + data.address + ' | Est. ' + data.established + ' | ' + data.area + '</p></div>' +
+                '<p><i class="fas fa-map-marker-alt" style="color:var(--uemp-maroon)"></i> ' + data.address + ' | Est. ' + data.established + ' | ' + data.area + '</p></div>' +
                 '<h3 style="color:var(--uemp-navy);margin-bottom:16px">Facilities</h3>' +
                 '<div class="campus-facilities">' + facilities + '</div>' +
                 '<h3 style="color:var(--uemp-navy);margin:32px 0 16px">Departments</h3>' +
