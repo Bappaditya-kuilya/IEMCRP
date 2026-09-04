@@ -169,14 +169,14 @@
            Header
            ============================================ */
         .site-header {
-            background: var(--uemp-maroon);
+            background: #1a1a2e;
             position: sticky;
             top: 0;
             z-index: 1000;
             transition: box-shadow 0.3s ease;
         }
         .site-header.scrolled {
-            box-shadow: 0 4px 20px rgba(128,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         .header-inner {
             display: flex;
@@ -376,9 +376,10 @@
             content: '';
             position: absolute;
             top: 0; right: 0; bottom: 0;
-            width: 42%;
-            background: linear-gradient(135deg, var(--uemp-maroon) 0%, var(--uemp-maroon-dark) 100%);
-            clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%);
+            width: 35%;
+            background: linear-gradient(135deg, #800000 0%, #600000 100%);
+            clip-path: polygon(40% 0, 100% 0, 100% 100%, 0% 100%);
+            opacity: 0.9;
         }
         .hero::after {
             content: '';
@@ -410,7 +411,7 @@
         }
         .hero-content p {
             font-size: 20px;
-            color: var(--uemp-maroon);
+            color: #000000;
             margin-bottom: 28px;
             line-height: 1.6;
             max-width: 420px;
@@ -434,7 +435,7 @@
             outline: none;
         }
         .hero-search button {
-            background: var(--uemp-maroon);
+            background: #1a1a2e;
             color: white;
             border: none;
             padding: 14px 24px;
@@ -442,7 +443,7 @@
             font-size: 15px;
             transition: background var(--transition);
         }
-        .hero-search button:hover { background: var(--uemp-maroon-dark); }
+        .hero-search button:hover { background: #000; }
 
         /* ============================================
            Quick Links Bar
@@ -1935,7 +1936,7 @@
     <header class="site-header" id="site-header">
         <div class="header-inner">
             <a href="#home" class="logo-area" aria-label="UEM Home">
-                <img src="/public/UEM-Logo.png" alt="UEM Logo" class="logo-mark" style="width:56px;height:56px;object-fit:contain;">
+                <img src="/UEM-Logo.png" alt="UEM Logo" class="logo-mark" style="width:56px;height:56px;object-fit:contain;">
                 <div class="logo-text">
                     <span class="university-name">University of Engineering & Management</span>
                     <span class="tagline">Good Education, Good Jobs</span>
@@ -2393,7 +2394,7 @@
                 <!-- Brand Column -->
                 <div class="footer-brand">
                     <div class="footer-logo">
-                        <img src="/public/UEM-Logo.png" alt="UEM Logo" style="width:44px;height:44px;object-fit:contain;">
+                        <img src="/UEM-Logo.png" alt="UEM Logo" style="width:44px;height:44px;object-fit:contain;">
                         <span>UEM</span>
                     </div>
                     <div class="address">
