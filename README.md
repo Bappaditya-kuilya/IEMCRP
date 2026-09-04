@@ -1,60 +1,53 @@
-# IEMCRP Rebuild
+# UEMCRP - University of Engineering & Management CRP
 
-Secure college ERP system — student results, attendance, notices, user management.
+A full-stack university management portal cloned from UNT's website design, rebuilt with UEM (University of Engineering & Management, Kolkata) branding, data, and functionality.
+
+## Tech Stack
+
+- **Frontend**: Self-contained HTML/CSS/JavaScript (no framework)
+- **Backend**: Node.js + Express.js
+- **Database**: In-memory synthetic data (no external DB required)
+- **Deployment**: Docker (single container)
+
+## Features
+
+### Public Pages
+- Home (hero, stats, programs, events, why UEM)
+- Academic Programs (filterable by degree)
+- Notices & Announcements
+- Events
+- Placements (stats, top recruiters)
+- About UEM
+- Contact (form with backend submission)
+- Faculty Directory (filterable by department)
+- Academic Calendar
+- Research & Publications
+- Campus Info & Facilities
+- Privacy Policy
+
+### Student Portal
+- Login / Registration with token-based auth
+- Dashboard (CGPA, attendance, fees overview)
+- Profile (full student details)
+- Grades (semester-wise with SGPA/CGPA)
+- Attendance (per-subject with progress bars)
+- Fees (payment history, pending amounts)
+- Timetable (weekly class schedule)
+- Library (issued books, due dates)
 
 ## Quick Start
 
 ```bash
-docker compose up --build
+# Docker
+docker build -t uem-site .
+docker run -p 3000:4000 uem-site
 ```
 
-| Service | URL |
-|---------|-----|
-| Frontend | http://localhost:3000 |
-| Backend API | http://localhost:8080 |
-| PostgreSQL | localhost:5432 |
-| Redis | localhost:6379 |
+## Demo Credentials
 
-### Default Credentials
+- **Student ID**: `UEM/2023/CSE/401`
+- **Password**: `uem123`
 
-| Role | Username | Password |
-|------|----------|----------|
-| Admin | admin | password123 |
-| Staff | staff1 | password123 |
-| Staff | staff2 | password123 |
-| Student | student1 | password123 |
-| Student | student2-5 | password123 |
+## License
 
-## Tech Stack
-
-- Java 21 + Spring Boot 3.4
-- React + TypeScript + Tailwind CSS
-- PostgreSQL 16 + Redis 7
-- JWT auth (BCrypt) + Cloudflare Turnstile
-- Docker Compose
-
-## Features
-
-**Students:** View results, attendance, notices
-
-**Staff:** Upload results, create exams, manage student data
-
-**Admin:** User management, audit logs, system overview
-
-## Development
-
-```bash
-# Backend (requires Java 21)
-cd backend && ./mvnw spring-boot:run
-
-# Frontend (requires Node 22+)
-cd frontend && npm install && npm run dev
-```
-
-## Stop
-
-```bash
-docker compose down
-```
-
-To also remove the database volume: `docker compose down -v`
+MIT
