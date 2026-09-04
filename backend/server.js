@@ -55,6 +55,8 @@ const stats = {
   faculty: 350,
   placementRate: 95,
   recruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant', 'Accenture', 'IBM', 'Capgemini', 'HCL', 'Tech Mahindra', 'L&T Infotech'],
+  ranking: { nirf: 152, outlook: 45, indiaToday: 38 },
+  campus: { area: '50 acres', buildings: 8, labs: 12, libraries: 1 },
 };
 
 const notices = [
