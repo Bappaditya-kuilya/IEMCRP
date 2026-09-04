@@ -65,6 +65,9 @@ const notices = [
   { id: 3, title: 'Annual Tech Fest — Innovision 2026', date: '2026-09-20', type: 'event', content: 'Innovision 2026, the annual technical festival of UEM, will be held from September 20-22. Events include hackathon, robotics, paper presentation, and more.' },
   { id: 4, title: 'Mid-Semester Exam Schedule', date: '2026-09-10', type: 'academic', content: 'Mid-semester examinations will begin from October 1, 2026. Detailed schedule will be uploaded on the student portal.' },
   { id: 5, title: 'Guest Lecture on AI & Machine Learning', date: '2026-09-12', type: 'event', content: 'Department of CSE invites students to a guest lecture on "Recent Trends in AI & ML" by Dr. Rajesh Kumar, IIT Kharagpur.' },
+  { id: 6, title: 'Scholarship Applications Open', date: '2026-08-20', type: 'academic', content: 'Merit-cum-means scholarship applications for 2026-27 are now open. Apply through the student portal before September 30.' },
+  { id: 7, title: 'Independence Day Celebration', date: '2026-08-15', type: 'event', content: 'Flag hoisting ceremony at 9:00 AM in the main auditorium. All students and faculty are requested to attend.' },
+  { id: 8, title: 'New Library Timings', date: '2026-08-10', type: 'academic', content: 'Library hours extended to 10 PM during examination period. Weekend hours: 8 AM - 6 PM.' },
 ];
 
 const events = [
