@@ -75,6 +75,10 @@ const events = [
   { id: 2, title: 'Industry-Academia Conclave', date: '2026-10-05', type: 'conference', description: 'Annual conclave bringing together industry leaders and academicians to discuss future of engineering education.' },
   { id: 3, title: ' Campus Recruitment — Infosys', date: '2026-10-15', type: 'placement', description: 'Infosys recruitment drive for final year B.Tech students across all branches.' },
   { id: 4, title: 'Sports Week', date: '2026-11-01', endDate: '2026-11-07', type: 'cultural', description: 'Inter-department sports competition including cricket, football, basketball, badminton, and athletics.' },
+  { id: 5, title: 'Technical Paper Presentation', date: '2026-09-21', type: 'tech-fest', description: 'Present your research papers on emerging technologies. Best paper awards worth ₹25,000.' },
+  { id: 6, title: 'Hackathon 2026', date: '2026-09-20', type: 'tech-fest', description: '36-hour hackathon with ₹50,000 prize pool. Teams of 2-4 members. Theme: Smart Campus.' },
+  { id: 7, title: 'Alumni Meet 2026', date: '2026-12-20', type: 'cultural', description: 'Annual alumni reunion. Connect with 10,000+ UEM alumni working across the globe.' },
+  { id: 8, title: 'Farewell Party — Batch of 2026', date: '2027-05-10', type: 'cultural', description: 'Farewell celebration for graduating students. Cultural performances, awards, and memories.' },
 ];
 
 const faculty = [
