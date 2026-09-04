@@ -144,6 +144,8 @@ const research = [
   { id: 4, title: 'Sustainable Construction Materials', PI: 'Prof. (Dr.) Rajib Bandopadhyay', department: 'CE', funding: 'UGC', amount: '₹15 Lakhs', status: 'Ongoing', year: 2024 },
   { id: 5, title: 'AI-Driven Supply Chain Optimization', PI: 'Dr. Priya Banerjee', department: 'MBA', funding: 'AICTE', amount: '₹8 Lakhs', status: 'Completed', year: 2023 },
   { id: 6, title: 'Renewable Energy Integration in Microgrids', PI: 'Dr. Rana Majumder', department: 'EE', funding: 'MNRE', amount: '₹30 Lakhs', status: 'Ongoing', year: 2025 },
+  { id: 7, title: 'Natural Language Processing for Bengali', PI: 'Dr. Subrata Dasgupta', department: 'CSE', funding: 'DST SERB', amount: '₹20 Lakhs', status: 'Ongoing', year: 2025 },
+  { id: 8, title: 'Autonomous Vehicle Navigation Systems', PI: 'Dr. Arup Kumar Mitra', department: 'ME', funding: 'AICTE', amount: '₹22 Lakhs', status: 'Ongoing', year: 2024 },
 ];
 
 const campus = {
