@@ -125,7 +125,7 @@ const academicCalendar = [
   { id: 2, event: 'Last Date for Semester Registration', date: '2026-09-10', type: 'deadline' },
   { id: 3, event: 'Mid-Semester Examinations Begin', date: '2026-10-01', type: 'exam' },
   { id: 4, event: 'Mid-Semester Exams End', date: '2026-10-10', type: 'exam' },
-  { id: 5, event: 'Di vacances (Puja Break)', date: '2026-10-15', endDate: '2026-10-25', type: 'holiday' },
+  { id: 5, event: 'Puja Break', date: '2026-10-15', endDate: '2026-10-25', type: 'holiday' },
   { id: 6, event: 'End-Semester Examinations Begin', date: '2026-11-20', type: 'exam' },
   { id: 7, event: 'End-Semester Exams End', date: '2026-12-10', type: 'exam' },
   { id: 8, event: 'Winter Break', date: '2026-12-15', endDate: '2027-01-05', type: 'holiday' },
@@ -135,6 +135,9 @@ const academicCalendar = [
   { id: 12, event: 'Placement Season Begins', date: '2027-03-01', type: 'placement' },
   { id: 13, event: 'Semester Ends', date: '2027-05-15', type: 'semester' },
   { id: 14, event: 'Summer Vacations Begin', date: '2027-05-16', endDate: '2027-07-15', type: 'holiday' },
+  { id: 15, event: 'Independence Day Holiday', date: '2026-08-15', type: 'holiday' },
+  { id: 16, event: 'Teachers Day Celebration', date: '2026-09-05', type: 'event' },
+  { id: 17, event: 'Gandhi Jayanti Holiday', date: '2026-10-02', type: 'holiday' },
 ];
 
 const research = [
