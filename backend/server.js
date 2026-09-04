@@ -351,6 +351,8 @@ const gradePoints = { 'A+': 10, 'A': 9, 'A-': 8.5, 'B+': 8, 'B': 7, 'B-': 6.5, '
 api.post('/auth/register', (req, res) => {
   const { name, email, phone, password, department, program } = req.body;
   if (!name || !email || !password || !department || !program) return res.status(400).json({ error: 'All fields are required.' });
+  if (password.length < 4) return res.status(400).json({ error: 'Password must be at least 4 characters.' });
+  if (!email.includes('@')) return res.status(400).json({ error: 'Invalid email address.' });
   for (const [id, u] of users) { if (u.email === email) return res.status(409).json({ error: 'Email already registered.' }); }
   const deptCode = { CSE: 'CSE', ECE: 'ECE', EE: 'EE', ME: 'ME', CE: 'CE', IT: 'IT', MBA: 'MBA', MCA: 'MCA' }[department] || department.toUpperCase();
   const year = new Date().getFullYear();
