@@ -90,6 +90,10 @@ const faculty = [
   { id: 6, name: 'Dr. Sankar Nath Das', department: 'CSE', designation: 'Associate Professor', qualification: 'Ph.D (NIT Rourkela)', experience: '12 years' },
   { id: 7, name: 'Prof. (Dr.) Rajib Bandopadhyay', department: 'CE', designation: 'Professor & Head', qualification: 'Ph.D (JU)', experience: '25 years' },
   { id: 8, name: 'Dr. Dipanwita Das', department: 'CSE', designation: 'Assistant Professor', qualification: 'Ph.D (IIEST Shibpur)', experience: '8 years' },
+  { id: 9, name: 'Dr. Subrata Dasgupta', department: 'CSE', designation: 'Associate Professor', qualification: 'Ph.D (IIT Delhi)', experience: '14 years' },
+  { id: 10, name: 'Dr. Arpita Ghosh', department: 'ECE', designation: 'Assistant Professor', qualification: 'Ph.D (NIT Silchar)', experience: '6 years' },
+  { id: 11, name: 'Prof. Manas Kumar Sanyal', department: 'EE', designation: 'Professor', qualification: 'Ph.D (IIT Kharagpur)', experience: '23 years' },
+  { id: 12, name: 'Dr. Anindya Bose', department: 'ME', designation: 'Associate Professor', qualification: 'Ph.D (IIT ISM Dhanbad)', experience: '11 years' },
 ];
 
 const placements = {
