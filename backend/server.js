@@ -188,16 +188,22 @@ api.post('/auth/register', (req, res) => {
   if (password.length < 4) return res.status(400).json({ error: 'Password must be at least 4 characters.' });
   if (!email.includes('@')) return res.status(400).json({ error: 'Invalid email address.' });
 
-  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-  if (existing) return res.status(409).json({ error: 'Email already registered.' });
-
   const deptCode = { CSE: 'CSE', ECE: 'ECE', EE: 'EE', ME: 'ME', CE: 'CE', IT: 'IT', MBA: 'MBA', MCA: 'MCA' }[department] || department.toUpperCase();
   const year = new Date().getFullYear();
-  const count = db.prepare('SELECT COUNT(*) as c FROM users').get().c;
-  const seq = String(count + 1).padStart(3, '0');
-  const id = `UEM/${year}/${deptCode}/${seq}`;
 
-  db.prepare('INSERT INTO users (id, name, email, phone, password, department, semester, program, admission_year) VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?)').run(id, name, email, phone || null, hash(password), deptCode, program, year);
+  let id;
+  try {
+    id = db.transaction(() => {
+      const count = db.prepare('SELECT COUNT(*) as c FROM users').get().c;
+      const seq = String(count + 1).padStart(3, '0');
+      const newId = `UEM/${year}/${deptCode}/${seq}`;
+      db.prepare('INSERT INTO users (id, name, email, phone, password, department, semester, program, admission_year) VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?)').run(newId, name, email, phone || null, hash(password), deptCode, program, year);
+      return newId;
+    })();
+  } catch (e) {
+    if (e.message?.includes('UNIQUE constraint')) return res.status(409).json({ error: 'Email already registered.' });
+    throw e;
+  }
 
   const token = crypto.randomUUID();
   db.prepare('INSERT INTO sessions (token, user_id, name, role) VALUES (?, ?, ?, ?)').run(token, id, name, 'student');
