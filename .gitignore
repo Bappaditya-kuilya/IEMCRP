@@ -25,6 +25,7 @@ frontend/.vite/
 *.pem
 
 # Docker volumes
+backend/data/
 pgdata/
 
 # OS

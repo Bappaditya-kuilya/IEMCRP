@@ -1,12 +1,12 @@
 # UEMCRP - University of Engineering & Management CRP
 
-A full-stack university management portal cloned from UNT's website design, rebuilt with UEM (University of Engineering & Management, Kolkata) branding, data, and functionality.
+A full-stack university management portal for UEM Kolkata with a public website and student ERP portal.
 
 ## Tech Stack
 
-- **Frontend**: Self-contained HTML/CSS/JavaScript (no framework)
+- **Frontend**: Vanilla HTML/CSS/JavaScript (no framework)
 - **Backend**: Node.js + Express.js
-- **Database**: In-memory synthetic data (no external DB required)
+- **Database**: SQLite via better-sqlite3
 - **Deployment**: Docker (single container)
 
 ## Features
@@ -41,6 +41,9 @@ A full-stack university management portal cloned from UNT's website design, rebu
 # Docker
 docker build -t uem-site .
 docker run -p 3000:4000 uem-site
+
+# Local
+cd backend && npm install && npm run dev
 ```
 
 ## Demo Credentials
