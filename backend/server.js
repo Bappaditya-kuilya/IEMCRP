@@ -38,7 +38,6 @@ app.use(express.json({ limit: '10kb' }));
 const dbPath = join(__dirname, 'data', 'uemcrp.db');
 const dataDir = join(__dirname, 'data');
 if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
-}
 
 const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
