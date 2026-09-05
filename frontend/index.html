@@ -3297,6 +3297,15 @@
         loadHomePage();
         onHashChange();
 
+        // Expose IIFE-scoped functions for inline event handlers
+        window.doAuthLogin = doAuthLogin;
+        window.doAuthRegister = doAuthRegister;
+        window.switchAuthTab = switchAuthTab;
+        window.portalNav = portalNav;
+        window.portalLogout = portalLogout;
+        window.filterFaculty = filterFaculty;
+        window.submitApply = submitApply;
+
     })();
 
     // Contact form submission
@@ -3337,16 +3346,6 @@
         });
     }
 
-    // Expose functions for inline event handlers (IIFE scopes them)
-    window.doAuthLogin = doAuthLogin;
-    window.doAuthRegister = doAuthRegister;
-    window.switchAuthTab = switchAuthTab;
-    window.portalNav = portalNav;
-    window.portalLogout = portalLogout;
-    window.filterFaculty = filterFaculty;
-    window.filterPrograms = filterPrograms;
-    window.submitContact = submitContact;
-    window.submitApply = submitApply;
     </script>
 </body>
 </html>
