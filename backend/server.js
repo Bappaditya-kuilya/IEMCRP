@@ -231,7 +231,7 @@ api.post('/auth/logout', authMiddleware, (req, res) => {
 
 // ── Student Portal ────────────────────────────────────────
 api.get('/student/profile', authMiddleware, (req, res) => {
-  const u = db.prepare('SELECT id, name, email, phone, department, semester, program, admission_year, dob, gender, blood_group, address, cgpa, backlogs FROM users WHERE id = ?').get(req.user.user_id);
+  const u = db.prepare('SELECT id, name, email, phone, department, semester, program, admission_year as admissionYear, dob, gender, blood_group as bloodGroup, address, cgpa, backlogs FROM users WHERE id = ?').get(req.user.user_id);
   if (!u) return res.status(404).json({ error: 'User not found' });
   res.json(u);
 });

@@ -1,9 +1,193 @@
-import { programs, stats, notices, events, faculty, placements, academicCalendar, research, campus, users } from './data.js';
+// Vercel serverless API — matches backend/server.js contract
+// ponytail: in-memory, no persistence. Same ceiling as before.
 
 function cors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+}
+
+const programs = [
+  { id: 1, name: 'B.Tech Computer Science & Engineering', degree: 'B.Tech', duration: '4 years', department: 'CSE', seats: 180 },
+  { id: 2, name: 'B.Tech Electronics & Communication', degree: 'B.Tech', duration: '4 years', department: 'ECE', seats: 120 },
+  { id: 3, name: 'B.Tech Electrical Engineering', degree: 'B.Tech', duration: '4 years', department: 'EE', seats: 60 },
+  { id: 4, name: 'B.Tech Mechanical Engineering', degree: 'B.Tech', duration: '4 years', department: 'ME', seats: 60 },
+  { id: 5, name: 'B.Tech Civil Engineering', degree: 'B.Tech', duration: '4 years', department: 'CE', seats: 60 },
+  { id: 6, name: 'B.Tech Information Technology', degree: 'B.Tech', duration: '4 years', department: 'IT', seats: 60 },
+  { id: 7, name: 'M.Tech Computer Science & Engineering', degree: 'M.Tech', duration: '2 years', department: 'CSE', seats: 30 },
+  { id: 8, name: 'M.Tech VLSI Design', degree: 'M.Tech', duration: '2 years', department: 'ECE', seats: 18 },
+  { id: 9, name: 'M.Tech Power Systems', degree: 'M.Tech', duration: '2 years', department: 'EE', seats: 18 },
+  { id: 10, name: 'MBA General Management', degree: 'MBA', duration: '2 years', department: 'MBA', seats: 120 },
+  { id: 11, name: 'MCA', degree: 'MCA', duration: '3 years', department: 'MCA', seats: 60 },
+  { id: 12, name: 'Ph.D Computer Science', degree: 'Ph.D', duration: '3-5 years', department: 'CSE', seats: 10 },
+  { id: 13, name: 'Ph.D Electronics & Communication', degree: 'Ph.D', duration: '3-5 years', department: 'ECE', seats: 8 },
+];
+
+const notices = [
+  { id: 1, title: 'Fall 2026 Semester Registration Open', date: '2026-08-15', type: 'academic', content: 'Online registration for Fall 2026 semester is now open. Last date to register: September 10, 2026.' },
+  { id: 2, title: 'Campus Placement Drive — TCS', date: '2026-09-05', type: 'placement', content: 'TCS will be conducting a campus placement drive for B.Tech CSE, IT, and ECE students. Eligibility: CGPA >= 6.0.' },
+  { id: 3, title: 'Annual Tech Fest — Innovision 2026', date: '2026-09-20', type: 'event', content: 'Innovision 2026, the annual technical festival of UEM, will be held from September 20-22.' },
+  { id: 4, title: 'Mid-Semester Exam Schedule', date: '2026-09-10', type: 'academic', content: 'Mid-semester examinations will begin from October 1, 2026.' },
+  { id: 5, title: 'Guest Lecture on AI & Machine Learning', date: '2026-09-12', type: 'event', content: 'Department of CSE invites students to a guest lecture on "Recent Trends in AI & ML".' },
+  { id: 6, title: 'Scholarship Applications Open', date: '2026-08-20', type: 'academic', content: 'Merit-cum-means scholarship applications for 2026-27 are now open.' },
+  { id: 7, title: 'Independence Day Celebration', date: '2026-08-15', type: 'event', content: 'Flag hoisting ceremony at 9:00 AM in the main auditorium.' },
+  { id: 8, title: 'New Library Timings', date: '2026-08-10', type: 'academic', content: 'Library hours extended to 10 PM during examination period.' },
+];
+
+const events = [
+  { id: 1, title: 'Innovision 2026 — Annual Tech Fest', date: '2026-09-20', end_date: '2026-09-22', type: 'tech-fest', description: 'Three-day annual technical festival with hackathons, robotics competitions, and cultural performances.' },
+  { id: 2, title: 'Industry-Academia Conclave', date: '2026-10-05', end_date: null, type: 'conference', description: 'Annual conclave bringing together industry leaders and academicians.' },
+  { id: 3, title: 'Campus Recruitment — Infosys', date: '2026-10-15', end_date: null, type: 'placement', description: 'Infosys recruitment drive for final year B.Tech students.' },
+  { id: 4, title: 'Sports Week', date: '2026-11-01', end_date: '2026-11-07', type: 'cultural', description: 'Inter-department sports competition.' },
+  { id: 5, title: 'Technical Paper Presentation', date: '2026-09-21', end_date: null, type: 'tech-fest', description: 'Present your research papers on emerging technologies.' },
+  { id: 6, title: 'Hackathon 2026', date: '2026-09-20', end_date: null, type: 'tech-fest', description: '36-hour hackathon with ₹50,000 prize pool.' },
+  { id: 7, title: 'Alumni Meet 2026', date: '2026-12-20', end_date: null, type: 'cultural', description: 'Annual alumni reunion.' },
+  { id: 8, title: 'Farewell Party — Batch of 2026', date: '2027-05-10', end_date: null, type: 'cultural', description: 'Farewell celebration for graduating students.' },
+];
+
+const faculty = [
+  { id: 1, name: 'Dr. Amitava Ghosh', department: 'CSE', designation: 'Professor & Head', qualification: 'Ph.D (IIT Kharagpur)', experience: '22 years' },
+  { id: 2, name: 'Dr. Suchismita Das', department: 'ECE', designation: 'Professor', qualification: 'Ph.D (Jadavpur University)', experience: '18 years' },
+  { id: 3, name: 'Dr. Rana Majumder', department: 'EE', designation: 'Professor & Head', qualification: 'Ph.D (NIT Durgapur)', experience: '20 years' },
+  { id: 4, name: 'Dr. Arup Kumar Mitra', department: 'ME', designation: 'Professor', qualification: 'Ph.D (BESU Shibpur)', experience: '19 years' },
+  { id: 5, name: 'Dr. Priya Banerjee', department: 'MBA', designation: 'Professor & Head', qualification: 'Ph.D (IIM Calcutta)', experience: '15 years' },
+  { id: 6, name: 'Dr. Sankar Nath Das', department: 'CSE', designation: 'Associate Professor', qualification: 'Ph.D (NIT Rourkela)', experience: '12 years' },
+  { id: 7, name: 'Prof. (Dr.) Rajib Bandopadhyay', department: 'CE', designation: 'Professor & Head', qualification: 'Ph.D (JU)', experience: '25 years' },
+  { id: 8, name: 'Dr. Dipanwita Das', department: 'CSE', designation: 'Assistant Professor', qualification: 'Ph.D (IIEST Shibpur)', experience: '8 years' },
+  { id: 9, name: 'Dr. Subrata Dasgupta', department: 'CSE', designation: 'Associate Professor', qualification: 'Ph.D (IIT Delhi)', experience: '14 years' },
+  { id: 10, name: 'Dr. Arpita Ghosh', department: 'ECE', designation: 'Assistant Professor', qualification: 'Ph.D (NIT Silchar)', experience: '6 years' },
+  { id: 11, name: 'Prof. Manas Kumar Sanyal', department: 'EE', designation: 'Professor', qualification: 'Ph.D (IIT Kharagpur)', experience: '23 years' },
+  { id: 12, name: 'Dr. Anindya Bose', department: 'ME', designation: 'Associate Professor', qualification: 'Ph.D (IIT ISM Dhanbad)', experience: '11 years' },
+];
+
+const placements = {
+  year: 2025, total_students: 480, placed: 456, rate: 95,
+  highest_package: '42 LPA', average_package: '6.5 LPA',
+  topRecruiters: [
+    { name: 'TCS', offers: 120 }, { name: 'Infosys', offers: 85 }, { name: 'Wipro', offers: 65 },
+    { name: 'Cognizant', offers: 55 }, { name: 'Accenture', offers: 40 }, { name: 'IBM', offers: 30 },
+    { name: 'Capgemini', offers: 25 }, { name: 'HCL', offers: 20 }, { name: 'Tech Mahindra', offers: 18 },
+    { name: 'L&T Infotech', offers: 15 }, { name: 'Mindtree', offers: 12 }, { name: 'Amazon', offers: 5 },
+  ],
+};
+
+const academicCalendar = [
+  { id: 1, event: 'Fall 2026 Semester Begins', date: '2026-08-01', type: 'semester' },
+  { id: 2, event: 'Last Date for Semester Registration', date: '2026-09-10', type: 'deadline' },
+  { id: 3, event: 'Mid-Semester Examinations Begin', date: '2026-10-01', type: 'exam' },
+  { id: 4, event: 'Mid-Semester Exams End', date: '2026-10-10', type: 'exam' },
+  { id: 5, event: 'Puja Break', date: '2026-10-15', end_date: '2026-10-25', type: 'holiday' },
+  { id: 6, event: 'End-Semester Examinations Begin', date: '2026-11-20', type: 'exam' },
+  { id: 7, event: 'End-Semester Exams End', date: '2026-12-10', type: 'exam' },
+  { id: 8, event: 'Winter Break', date: '2026-12-15', end_date: '2027-01-05', type: 'holiday' },
+  { id: 9, event: 'Spring 2027 Semester Begins', date: '2027-01-10', type: 'semester' },
+  { id: 10, event: 'Republic Day Holiday', date: '2027-01-26', type: 'holiday' },
+  { id: 11, event: 'Annual Day Celebration', date: '2027-02-15', type: 'event' },
+  { id: 12, event: 'Placement Season Begins', date: '2027-03-01', type: 'placement' },
+  { id: 13, event: 'Semester Ends', date: '2027-05-15', type: 'semester' },
+  { id: 14, event: 'Summer Vacations Begin', date: '2027-05-16', end_date: '2027-07-15', type: 'holiday' },
+  { id: 15, event: 'Independence Day Holiday', date: '2026-08-15', type: 'holiday' },
+  { id: 16, event: 'Teachers Day Celebration', date: '2026-09-05', type: 'event' },
+  { id: 17, event: 'Gandhi Jayanti Holiday', date: '2026-10-02', type: 'holiday' },
+];
+
+const research = [
+  { id: 1, title: 'Deep Learning for Medical Image Analysis', pi: 'Dr. Amitava Ghosh', department: 'CSE', funding: 'DST SERB', amount: '₹25 Lakhs', status: 'Ongoing', year: 2024 },
+  { id: 2, title: 'Smart Grid Energy Management Systems', pi: 'Dr. Rana Majumder', department: 'EE', funding: 'AICTE', amount: '₹18 Lakhs', status: 'Ongoing', year: 2025 },
+  { id: 3, title: 'IoT-Based Water Quality Monitoring', pi: 'Dr. Suchismita Das', department: 'ECE', funding: 'DST', amount: '₹12 Lakhs', status: 'Completed', year: 2023 },
+  { id: 4, title: 'Sustainable Construction Materials', pi: 'Prof. (Dr.) Rajib Bandopadhyay', department: 'CE', funding: 'UGC', amount: '₹15 Lakhs', status: 'Ongoing', year: 2024 },
+  { id: 5, title: 'AI-Driven Supply Chain Optimization', pi: 'Dr. Priya Banerjee', department: 'MBA', funding: 'AICTE', amount: '₹8 Lakhs', status: 'Completed', year: 2023 },
+  { id: 6, title: 'Renewable Energy Integration in Microgrids', pi: 'Dr. Rana Majumder', department: 'EE', funding: 'MNRE', amount: '₹30 Lakhs', status: 'Ongoing', year: 2025 },
+  { id: 7, title: 'Natural Language Processing for Bengali', pi: 'Dr. Subrata Dasgupta', department: 'CSE', funding: 'DST SERB', amount: '₹20 Lakhs', status: 'Ongoing', year: 2025 },
+  { id: 8, title: 'Autonomous Vehicle Navigation Systems', pi: 'Dr. Arup Kumar Mitra', department: 'ME', funding: 'AICTE', amount: '₹22 Lakhs', status: 'Ongoing', year: 2024 },
+];
+
+const campus = {
+  name: 'UEM Kolkata — Action Area III Campus',
+  address: 'Action Area III, New Town, Kolkata, West Bengal 700156, India',
+  established: 2001, area: '50 acres',
+  facilities: [
+    { name: 'Central Library', description: 'Over 80,000 volumes, digital access to IEEE, Springer, and Elsevier journals', icon: 'fa-book' },
+    { name: 'Computer Labs', description: '12 state-of-the-art labs with 800+ workstations and high-speed internet', icon: 'fa-desktop' },
+    { name: 'Auditorium', description: '500-seat auditorium with modern audio-visual equipment', icon: 'fa-theater-masks' },
+    { name: 'Sports Complex', description: 'Indoor and outdoor facilities for cricket, football, basketball, badminton, and gym', icon: 'fa-running' },
+    { name: 'Hostels', description: 'Separate hostels for boys and girls with Wi-Fi, mess, and 24/7 security', icon: 'fa-home' },
+    { name: 'Cafeteria', description: 'Multi-cuisine cafeteria and juice bar serving 2000+ students daily', icon: 'fa-utensils' },
+    { name: 'Medical Center', description: 'On-campus medical center with ambulance facility', icon: 'fa-medkit' },
+    { name: 'Innovation Lab', description: 'Dedicated space for robotics, 3D printing, and IoT prototyping', icon: 'fa-flask' },
+    { name: 'Seminar Hall', description: '200-capacity hall for workshops, guest lectures, and faculty meetings', icon: 'fa-chalkboard-teacher' },
+    { name: 'Open Air Theatre', description: 'Amphitheatre for cultural events, performances, and student gatherings', icon: 'fa-music' },
+  ],
+};
+
+const privacyPolicy = {
+  lastUpdated: '2026-08-01',
+  sections: [
+    { title: 'Information We Collect', content: 'We collect personal information such as name, email address, phone number, and academic records when you apply for admission or register for programs.' },
+    { title: 'How We Use Your Information', content: 'Your information is used to process admissions, communicate about academic matters, send university notifications, improve our website and services, and comply with legal obligations.' },
+    { title: 'Data Sharing', content: 'We do not sell or rent personal information to third parties.' },
+    { title: 'Data Security', content: 'We implement industry-standard security measures including encryption, access controls, and regular security audits.' },
+    { title: 'Cookies', content: 'Our website uses cookies to enhance your browsing experience, analyze site traffic, and personalize content.' },
+    { title: 'Your Rights', content: 'You have the right to access, correct, or delete your personal data.' },
+    { title: 'Contact', content: 'For questions about this privacy policy, contact: Data Protection Officer, UEM Kolkata.' },
+  ],
+};
+
+// ── Auth (in-memory) ──────────────────────────────────────
+const crypto = await import('crypto');
+const hash = (pw) => crypto.createHash('sha256').update(pw).digest('hex');
+const gradePoints = { 'A+': 10, 'A': 9, 'A-': 8.5, 'B+': 8, 'B': 7, 'B-': 6.5, 'C+': 6, 'C': 5, 'F': 0 };
+
+const users = new Map();
+const sessions = new Map();
+
+// Demo student
+const demoId = 'UEM/2023/CSE/401';
+users.set(demoId, { id: demoId, name: 'Amit Sharma', email: 'amit.shashorst@uem.edu.in', phone: '9876543210', password: hash('uem123'), department: 'CSE', semester: 5, program: 'B.Tech Computer Science & Engineering', admission_year: 2023, dob: '2004-05-12', gender: 'Male', blood_group: 'B+', address: 'Salt Lake, Kolkata', cgpa: 8.2, backlogs: 0 });
+
+const grades = new Map();
+const attendance = new Map();
+const fees = new Map();
+const timetable = new Map();
+const libraryBooks = new Map();
+
+grades.set(demoId, [
+  { sem: 3, subjects: [{ code: 'CS301', name: 'Data Structures', credits: 4, grade: 'A' }, { code: 'CS302', name: 'OOP with Java', credits: 3, grade: 'A+' }, { code: 'CS303', name: 'Digital Electronics', credits: 3, grade: 'B+' }, { code: 'MA301', name: 'Linear Algebra', credits: 3, grade: 'A' }, { code: 'CS304', name: 'DBMS Lab', credits: 2, grade: 'A+' }], semGpa: 9.0 },
+  { sem: 4, subjects: [{ code: 'CS401', name: 'Algorithms', credits: 4, grade: 'A+' }, { code: 'CS402', name: 'Operating Systems', credits: 3, grade: 'A' }, { code: 'CS403', name: 'Computer Networks', credits: 3, grade: 'B+' }, { code: 'MA401', name: 'Probability & Statistics', credits: 3, grade: 'A' }, { code: 'CS404', name: 'OS Lab', credits: 2, grade: 'A' }], semGpa: 8.7 },
+  { sem: 5, subjects: [{ code: 'CS501', name: 'Compiler Design', credits: 3, grade: 'A' }, { code: 'CS502', name: 'Software Engineering', credits: 3, grade: 'B+' }, { code: 'CS503', name: 'Web Technologies', credits: 3, grade: 'A+' }, { code: 'CS504', name: 'AI & ML Fundamentals', credits: 3, grade: 'A' }, { code: 'CS505', name: 'Mini Project', credits: 2, grade: 'A+' }], semGpa: 8.8 },
+]);
+
+attendance.set(demoId, { overall: 87, subjects: [
+  { code: 'CS501', name: 'Compiler Design', total: 40, attended: 35 },
+  { code: 'CS502', name: 'Software Engineering', total: 40, attended: 33 },
+  { code: 'CS503', name: 'Web Technologies', total: 40, attended: 38 },
+  { code: 'CS504', name: 'AI & ML Fundamentals', total: 40, attended: 34 },
+  { code: 'CS505', name: 'Mini Project', total: 20, attended: 19 },
+]});
+
+fees.set(demoId, [
+  { sem: 5, amount: 125000, paid: 125000, status: 'paid', date: '2026-08-15', receiptNo: 'UEM/RCPT/2026/0847' },
+  { sem: 6, amount: 125000, paid: 0, status: 'pending', dueDate: '2027-01-15' },
+]);
+
+timetable.set(demoId, [
+  { time: '09:00 - 09:50', mon: { subject: 'Compiler Design', room: 'A-301', type: 'Lecture' }, tue: { subject: 'Software Engineering', room: 'A-301', type: 'Lecture' }, wed: { subject: 'AI & ML Fundamentals', room: 'B-201', type: 'Lecture' }, thu: { subject: 'Compiler Design', room: 'A-301', type: 'Tutorial' }, fri: { subject: 'Web Technologies', room: 'C-105', type: 'Lab' } },
+  { time: '10:00 - 10:50', mon: { subject: 'Software Engineering', room: 'A-301', type: 'Lecture' }, tue: { subject: 'AI & ML Fundamentals', room: 'B-201', type: 'Lecture' }, wed: { subject: 'Web Technologies', room: 'C-105', type: 'Lecture' }, thu: { subject: 'Software Engineering', room: 'A-301', type: 'Lab' }, fri: { subject: 'Mini Project', room: 'D-102', type: 'Project' } },
+  { time: '11:00 - 11:50', mon: { subject: 'AI & ML Fundamentals', room: 'B-201', type: 'Lecture' }, tue: { subject: 'Web Technologies', room: 'C-105', type: 'Lecture' }, wed: { subject: 'Mini Project', room: 'D-102', type: 'Project' }, thu: { subject: 'AI & ML Fundamentals', room: 'B-201', type: 'Lab' }, fri: { subject: 'Compiler Design', room: 'A-301', type: 'Lecture' } },
+  { time: '12:00 - 12:50', mon: null, tue: null, wed: null, thu: null, fri: null },
+  { time: '14:00 - 14:50', mon: { subject: 'Mini Project', room: 'D-102', type: 'Project' }, tue: { subject: 'Mini Project', room: 'D-102', type: 'Project' }, wed: null, thu: null, fri: null },
+]);
+
+libraryBooks.set(demoId, [
+  { title: 'Introduction to Algorithms (CLRS)', author: 'Cormen et al.', issued: '2026-08-01', due: '2026-08-30', status: 'returned' },
+  { title: 'Database System Concepts', author: 'Silberschatz', issued: '2026-08-15', due: '2026-09-15', status: 'issued' },
+  { title: 'Computer Networks (Tanenbaum)', author: 'Tanenbaum', issued: '2026-08-20', due: '2026-09-20', status: 'issued' },
+]);
+
+function authMiddleware(req) {
+  const token = req.headers?.authorization?.replace('Bearer ', '');
+  if (!token || !sessions.has(token)) return null;
+  return sessions.get(token);
 }
 
 export default function handler(req, res) {
@@ -14,60 +198,168 @@ export default function handler(req, res) {
   const path = url.pathname.replace('/api', '');
   const degree = url.searchParams.get('degree');
   const dept = url.searchParams.get('department');
+  const q = url.searchParams.get('q');
 
+  // ── Public ────────────────────────────────────────────
   if (path === '/health') return res.json({ status: 'ok', timestamp: new Date().toISOString() });
-  if (path === '/stats') return res.json(stats);
+
+  if (path === '/stats') {
+    return res.json({ established: 2001, departments: 12, students: 5500, faculty: faculty.length, placementRate: 95,
+      recruiters: ['TCS', 'Infosys', 'Wipro', 'Cognizant', 'Accenture', 'IBM', 'Capgemini', 'HCL', 'Tech Mahindra', 'L&T Infotech'],
+      ranking: { nirf: 152, outlook: 45, indiaToday: 38 }, campus: { area: '50 acres', buildings: 8, labs: 12, libraries: 1 } });
+  }
+
   if (path === '/programs') {
     let r = programs;
-    if (degree) r = r.filter(p => p.degree === degree);
+    if (degree) r = r.filter(p => p.degree.toLowerCase() === degree.toLowerCase());
     return res.json(r);
   }
+  if (path.startsWith('/programs/')) {
+    const id = Number(path.split('/')[2]);
+    const p = programs.find(x => x.id === id);
+    if (!p) return res.status(404).json({ error: 'Program not found' });
+    return res.json(p);
+  }
+
   if (path === '/notices') return res.json(notices);
+
   if (path === '/events') return res.json(events);
+
   if (path === '/faculty') {
     let r = faculty;
-    if (dept) r = r.filter(f => f.department === dept);
+    if (dept) r = r.filter(f => f.department.toLowerCase() === dept.toLowerCase());
     return res.json(r);
   }
+
   if (path === '/placements') return res.json(placements);
-  if (path === '/calendar') return res.json(academicCalendar);
+
+  if (path === '/search') {
+    const query = `%${(q || '').toLowerCase()}%`;
+    if (q === '%%') return res.json({ programs: [], notices: [], events: [] });
+    return res.json({
+      programs: programs.filter(p => p.name.toLowerCase().includes(q) || p.department.toLowerCase().includes(q)),
+      notices: notices.filter(n => n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q)),
+      events: events.filter(e => e.title.toLowerCase().includes(q) || e.description.toLowerCase().includes(q)),
+    });
+  }
+
+  if (path === '/academic-calendar') return res.json(academicCalendar);
   if (path === '/research') return res.json(research);
   if (path === '/campus') return res.json(campus);
+  if (path === '/privacy-policy') return res.json(privacyPolicy);
+
+  // ── Contact / Apply ───────────────────────────────────
+  if (path === '/contact' && req.method === 'POST') {
+    const { name, email, subject, message } = req.body || {};
+    if (!name || !email || !message) return res.status(400).json({ error: 'Name, email, and message are required.' });
+    if (!email.includes('@')) return res.status(400).json({ error: 'Invalid email address.' });
+    if (message.length < 10) return res.status(400).json({ error: 'Message must be at least 10 characters.' });
+    return res.json({ success: true, message: 'Thank you for reaching out. We will get back to you within 2-3 business days.' });
+  }
+
+  if (path === '/apply' && req.method === 'POST') {
+    const { name, email, phone, program, qualification } = req.body || {};
+    if (!name || !email || !program) return res.status(400).json({ error: 'Name, email, and program are required.' });
+    if (!email.includes('@')) return res.status(400).json({ error: 'Invalid email address.' });
+    if (name.length < 2) return res.status(400).json({ error: 'Name must be at least 2 characters.' });
+    const appId = 'UEM' + Date.now().toString(36).toUpperCase();
+    return res.json({ success: true, applicationId: appId, message: `Application ${appId} submitted successfully.` });
+  }
+
+  // ── Auth ──────────────────────────────────────────────
+  if (path === '/auth/register' && req.method === 'POST') {
+    const { name, email, phone, password, department, program } = req.body || {};
+    if (!name || !email || !password || !department || !program) return res.status(400).json({ error: 'All fields are required.' });
+    if (password.length < 4) return res.status(400).json({ error: 'Password must be at least 4 characters.' });
+    if (!email.includes('@')) return res.status(400).json({ error: 'Invalid email address.' });
+    for (const [id, u] of users) { if (u.email === email) return res.status(409).json({ error: 'Email already registered.' }); }
+    const deptCode = { CSE: 'CSE', ECE: 'ECE', EE: 'EE', ME: 'ME', CE: 'CE', IT: 'IT', MBA: 'MBA', MCA: 'MCA' }[department] || department.toUpperCase();
+    const year = new Date().getFullYear();
+    const seq = String(users.size + 1).padStart(3, '0');
+    const id = `UEM/${year}/${deptCode}/${seq}`;
+    users.set(id, { id, name, email, phone, password: hash(password), department: deptCode, semester: 1, program, admission_year: year, dob: '', gender: '', blood_group: '', address: '', cgpa: 0, backlogs: 0 });
+    const token = crypto.randomUUID();
+    sessions.set(token, { id, name, role: 'student' });
+    return res.json({ success: true, token, user: { id, name, department: deptCode, semester: 1 } });
+  }
 
   if (path === '/auth/login' && req.method === 'POST') {
-    const { email, password } = req.body || {};
-    const user = users.find(u => u.email === email && u.password === password);
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
-    const { password: _, ...safe } = user;
-    return res.json({ token: 'mock-jwt-token-' + user.id, user: safe });
+    const { username, password } = req.body || {};
+    if (!username || !password) return res.status(400).json({ error: 'Username and password are required.' });
+    let found = null;
+    for (const [id, u] of users) { if (id === username || u.email === username) { found = { id, ...u }; break; } }
+    if (!found || found.password !== hash(password)) return res.status(401).json({ error: 'Invalid credentials.' });
+    const token = crypto.randomUUID();
+    sessions.set(token, { id: found.id, name: found.name, role: 'student' });
+    return res.json({ success: true, token, user: { id: found.id, name: found.name, department: found.department, semester: found.semester, program: found.program } });
   }
 
-  if (path === '/auth/register' && req.method === 'POST') {
-    const { name, email, password } = req.body || {};
-    if (!name || !email || !password) return res.status(400).json({ error: 'All fields required' });
-    const exists = users.find(u => u.email === email);
-    if (exists) return res.status(409).json({ error: 'Email already registered' });
-    const newUser = { id: users.length + 1, email, password, name, roll: 'NEW-' + Date.now(), department: 'TBD', semester: 1, cgpa: 0 };
-    users.push(newUser);
-    const { password: _, ...safe } = newUser;
-    return res.json({ token: 'mock-jwt-token-' + newUser.id, user: safe });
+  if (path === '/auth/logout' && req.method === 'POST') {
+    const user = authMiddleware(req);
+    if (!user) return res.status(401).json({ error: 'Unauthorized' });
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    sessions.delete(token);
+    return res.json({ success: true });
   }
 
-  if (path === '/sessions') return res.json([
-    { id: 1, name: 'Fall 2026', startDate: '2026-08-01', endDate: '2026-12-10', status: 'active' },
-    { id: 2, name: 'Spring 2027', startDate: '2027-01-10', endDate: '2027-05-15', status: 'upcoming' },
-  ]);
+  // ── Student Portal (auth required) ────────────────────
+  if (path.startsWith('/student/')) {
+    const user = authMiddleware(req);
+    if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
-  if (path === '/students/portal') return res.json({
-    name: 'Rahul Sharma', roll: 'UEM-2023-CSE-001', department: 'CSE', semester: 5, cgpa: 8.7,
-    courses: ['Data Structures', 'Operating Systems', 'Computer Networks', 'Database Management', 'Theory of Computation'],
-    attendance: { total: 120, attended: 112, percentage: 93.3 },
-    fees: { total: 120000, paid: 90000, pending: 30000, dueDate: '2026-09-30' },
-    results: [
-      { semester: 4, sgpa: 8.9, courses: [{ name: 'Algorithms', grade: 'A' }, { name: 'Software Engineering', grade: 'A+' }] },
-      { semester: 3, sgpa: 8.5, courses: [{ name: 'Discrete Math', grade: 'A' }, { name: 'Digital Logic', grade: 'B+' }] },
-    ],
-  });
+    if (path === '/student/profile') {
+      const u = users.get(user.id);
+      if (!u) return res.status(404).json({ error: 'User not found' });
+      const { password, ...safe } = u;
+      return res.json(safe);
+    }
+
+    if (path === '/student/grades') {
+      const data = grades.get(user.id) || [];
+      const allSubjects = data.flatMap(s => s.subjects);
+      const totalCredits = allSubjects.reduce((a, b) => a + b.credits, 0);
+      const totalPoints = allSubjects.reduce((a, b) => a + b.credits * (gradePoints[b.grade] || 0), 0);
+      const cgpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : '0.00';
+      const gradeDistribution = {};
+      allSubjects.forEach(s => { gradeDistribution[s.grade] = (gradeDistribution[s.grade] || 0) + 1; });
+      return res.json({ semesters: data, cgpa: Number(cgpa), totalCredits, gradeDistribution });
+    }
+
+    if (path === '/student/attendance') {
+      return res.json(attendance.get(user.id) || { overall: 0, subjects: [] });
+    }
+
+    if (path === '/student/fees') {
+      return res.json(fees.get(user.id) || []);
+    }
+
+    if (path === '/student/timetable') {
+      return res.json(timetable.get(user.id) || []);
+    }
+
+    if (path === '/student/library') {
+      return res.json(libraryBooks.get(user.id) || []);
+    }
+
+    if (path === '/student/dashboard') {
+      const u = users.get(user.id);
+      if (!u) return res.status(404).json({ error: 'User not found' });
+      const g = grades.get(user.id) || [];
+      const a = attendance.get(user.id);
+      const f = fees.get(user.id) || [];
+      const pendingFee = f.filter(x => x.status === 'pending').reduce((sum, x) => sum + x.amount, 0);
+      const latestSem = g[g.length - 1];
+      const lib = libraryBooks.get(user.id) || [];
+      const booksIssued = lib.filter(b => b.status === 'issued').length;
+      return res.json({
+        name: u.name, id: u.id, department: u.department, semester: u.semester, program: u.program,
+        cgpa: latestSem?.semGpa || 0, attendance: a?.overall || 0,
+        pendingFee, nextDue: f.find(x => x.status === 'pending')?.dueDate || '',
+        recentGrades: latestSem?.subjects || [],
+        booksIssued,
+      });
+    }
+  }
 
   res.status(404).json({ error: 'Not found' });
 }
