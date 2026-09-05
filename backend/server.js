@@ -51,7 +51,7 @@ db.exec(schema);
 
 const programCount = db.prepare('SELECT COUNT(*) as c FROM programs').get();
 if (programCount.c === 0) {
-  db.exec(seed);
+  db.transaction(() => db.exec(seed))();
   console.log('[DB] Seeded fresh database');
 } else {
   console.log('[DB] Connected to existing database');
