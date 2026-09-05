@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 import compression from 'compression';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, mkdirSync } from 'fs';
 import Database from 'better-sqlite3';
 import crypto from 'crypto';
 
@@ -37,11 +37,8 @@ app.use(express.json({ limit: '10kb' }));
 // ── Database ──────────────────────────────────────────────
 const dbPath = join(__dirname, 'data', 'uemcrp.db');
 const dataDir = join(__dirname, 'data');
-if (!existsSync(dataDir)) {
-  import('fs').then(fs => fs.mkdirSync(dataDir, { recursive: true }));
+if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
 }
-const fsSync = await import('fs');
-if (!fsSync.existsSync(dataDir)) fsSync.mkdirSync(dataDir, { recursive: true });
 
 const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
