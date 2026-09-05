@@ -15,6 +15,8 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+if (process.env.VERCEL) app.set('trust proxy', 1);
+
 // ── Security ──────────────────────────────────────────────
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -35,25 +37,34 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10kb' }));
 
 // ── Database ──────────────────────────────────────────────
-const dbPath = join(__dirname, 'data', 'uemcrp.db');
-const dataDir = join(__dirname, 'data');
-if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
-
-const db = new Database(dbPath);
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
-
-// Init schema + seed
-const schema = readFileSync(join(__dirname, 'schema.sql'), 'utf8');
-const seed = readFileSync(join(__dirname, 'seed.sql'), 'utf8');
-db.exec(schema);
-
-const programCount = db.prepare('SELECT COUNT(*) as c FROM programs').get();
-if (programCount.c === 0) {
-  db.transaction(() => db.exec(seed))();
-  console.log('[DB] Seeded fresh database');
+const isServerless = !!process.env.VERCEL;
+let db;
+if (isServerless) {
+  // ponytail: in-memory on Vercel (read-only fs). Upgrade: Turso/Postgres.
+  db = new Database(':memory:');
+  db.pragma('foreign_keys = ON');
+  const schema = readFileSync(join(__dirname, 'schema.sql'), 'utf8');
+  const seed = readFileSync(join(__dirname, 'seed.sql'), 'utf8');
+  db.exec(schema);
+  db.exec(seed);
+  console.log('[DB] Seeded in-memory database (serverless)');
 } else {
-  console.log('[DB] Connected to existing database');
+  const dbPath = join(__dirname, 'data', 'uemcrp.db');
+  const dataDir = join(__dirname, 'data');
+  if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
+  db = new Database(dbPath);
+  db.pragma('journal_mode = WAL');
+  db.pragma('foreign_keys = ON');
+  const schema = readFileSync(join(__dirname, 'schema.sql'), 'utf8');
+  const seed = readFileSync(join(__dirname, 'seed.sql'), 'utf8');
+  db.exec(schema);
+  const programCount = db.prepare('SELECT COUNT(*) as c FROM programs').get();
+  if (programCount.c === 0) {
+    db.transaction(() => db.exec(seed))();
+    console.log('[DB] Seeded fresh database');
+  } else {
+    console.log('[DB] Connected to existing database');
+  }
 }
 
 // ── Helpers ───────────────────────────────────────────────
