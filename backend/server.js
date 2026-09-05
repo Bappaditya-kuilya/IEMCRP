@@ -303,6 +303,7 @@ api.get('/student/library', authMiddleware, (req, res) => {
 
 api.get('/student/dashboard', authMiddleware, (req, res) => {
   const u = db.prepare('SELECT name, id, department, semester, program FROM users WHERE id = ?').get(req.user.user_id);
+  if (!u) return res.status(404).json({ error: 'User not found' });
 
   const gradeRow = db.prepare('SELECT semester, subject_code, subject_name, credits, grade FROM grades WHERE user_id = ? ORDER BY semester DESC').all(req.user.user_id);
   const latestSem = gradeRow.length ? gradeRow[0].semester : 0;
