@@ -22,13 +22,18 @@ WORKDIR /app
 
 COPY --from=backend /app/backend/node_modules ./backend/node_modules
 COPY --from=backend /app/backend/server.js ./backend/
+COPY --from=backend /app/backend/schema.sql ./backend/
+COPY --from=backend /app/backend/seed.sql ./backend/
 COPY --from=backend /app/backend/package.json ./backend/
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist
+
+RUN mkdir -p /app/backend/data
 
 ENV NODE_ENV=production
 ENV PORT=4000
 
 EXPOSE 3000
 
-# Serve static frontend from dist via backend
+VOLUME /app/backend/data
+
 CMD ["node", "backend/server.js"]
