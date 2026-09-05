@@ -1,0 +1,196 @@
+-- UEMCRP Database Schema
+
+CREATE TABLE IF NOT EXISTS programs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  degree TEXT NOT NULL,
+  duration TEXT NOT NULL,
+  department TEXT NOT NULL,
+  seats INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS notices (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  date TEXT NOT NULL,
+  type TEXT NOT NULL,
+  content TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  date TEXT NOT NULL,
+  end_date TEXT,
+  type TEXT NOT NULL,
+  description TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS faculty (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  department TEXT NOT NULL,
+  designation TEXT NOT NULL,
+  qualification TEXT NOT NULL,
+  experience TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS placements (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  year INTEGER NOT NULL,
+  total_students INTEGER NOT NULL,
+  placed INTEGER NOT NULL,
+  rate INTEGER NOT NULL,
+  highest_package TEXT NOT NULL,
+  average_package TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS top_recruiters (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  placement_id INTEGER NOT NULL REFERENCES placements(id),
+  name TEXT NOT NULL,
+  offers INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS academic_calendar (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  event TEXT NOT NULL,
+  date TEXT NOT NULL,
+  end_date TEXT,
+  type TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS research (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  pi TEXT NOT NULL,
+  department TEXT NOT NULL,
+  funding TEXT NOT NULL,
+  amount TEXT NOT NULL,
+  status TEXT NOT NULL,
+  year INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS campus (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  address TEXT NOT NULL,
+  established INTEGER NOT NULL,
+  area TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS campus_facilities (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  campus_id INTEGER NOT NULL REFERENCES campus(id),
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  icon TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS privacy_policy (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  last_updated TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS privacy_policy_sections (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  policy_id INTEGER NOT NULL REFERENCES privacy_policy(id),
+  title TEXT NOT NULL,
+  content TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  phone TEXT,
+  password TEXT NOT NULL,
+  department TEXT NOT NULL,
+  semester INTEGER NOT NULL DEFAULT 1,
+  program TEXT NOT NULL,
+  admission_year INTEGER NOT NULL,
+  dob TEXT,
+  gender TEXT,
+  blood_group TEXT,
+  address TEXT,
+  cgpa REAL NOT NULL DEFAULT 0,
+  backlogs INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  token TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id),
+  name TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'student'
+);
+
+CREATE TABLE IF NOT EXISTS grades (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL REFERENCES users(id),
+  semester INTEGER NOT NULL,
+  subject_code TEXT NOT NULL,
+  subject_name TEXT NOT NULL,
+  credits INTEGER NOT NULL,
+  grade TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS attendance (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL REFERENCES users(id),
+  subject_code TEXT NOT NULL,
+  subject_name TEXT NOT NULL,
+  total INTEGER NOT NULL DEFAULT 0,
+  attended INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS fees (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL REFERENCES users(id),
+  semester INTEGER NOT NULL,
+  amount INTEGER NOT NULL,
+  paid INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'pending',
+  date TEXT,
+  due_date TEXT,
+  receipt_no TEXT
+);
+
+CREATE TABLE IF NOT EXISTS timetable (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL REFERENCES users(id),
+  time_slot TEXT NOT NULL,
+  day TEXT NOT NULL,
+  subject TEXT,
+  room TEXT,
+  type TEXT
+);
+
+CREATE TABLE IF NOT EXISTS library_books (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL REFERENCES users(id),
+  title TEXT NOT NULL,
+  author TEXT NOT NULL,
+  issued TEXT NOT NULL,
+  due TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'issued'
+);
+
+CREATE TABLE IF NOT EXISTS contact_submissions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  subject TEXT,
+  message TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS applications (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  app_id TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT,
+  program TEXT NOT NULL,
+  qualification TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
